@@ -17,11 +17,11 @@ class Migrator
      */
     protected $response;
 
-    protected $currentVersion = '';
+    protected $currentVersion = null;
 
-    protected $requestVersion = '123';
+    protected $requestVersion = null;
 
-    protected $responseVersion = '123';
+    protected $responseVersion = null;
 
     /**
      * Migrator constructor.
@@ -31,6 +31,9 @@ class Migrator
     public function __construct(Request $request)
     {
         $this->request = $request;
+
+        $this->currentVersion = config('request-migrations.current_version');
+        $this->requestVersion = $request->header('x-api-request-version');
     }
 
     /**
