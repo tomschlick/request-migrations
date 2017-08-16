@@ -62,7 +62,7 @@ class Migrator
     }
 
     /**
-     * Set the API Response Headers
+     * Set the API Response Headers.
      */
     public function setResponseHeaders()
     {
