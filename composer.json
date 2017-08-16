@@ -1,0 +1,53 @@
+{
+    "name" : "tomschlick/request-migrations",
+    "description" : "HTTP Request Migrations",
+    "keywords" : [
+        "requests",
+        "request-migrations",
+        "http",
+        "migrations",
+        "middleware",
+        "laravel"
+    ],
+    "homepage" : "https://github.com/tomschlick/request-migrations",
+    "license" : "MIT",
+    "authors" : [
+        {
+            "name" : "Tom Schlick",
+            "email" : "tom@schlick.email",
+            "homepage" : "https://tomschlick.com"
+        }
+    ],
+    "require" : {
+        "php" : "^7.1"
+    },
+    "require-dev" : {
+        "phpunit/phpunit" : "^6.0"
+    },
+    "autoload" : {
+        "psr-4" : {
+            "TomSchlick\\RequestMigrations\\" : "src"
+        }
+    },
+    "autoload-dev" : {
+        "psr-4" : {
+            "TomSchlick\\RequestMigrations\\Test\\" : "tests"
+        }
+    },
+    "scripts" : {
+        "test" : "vendor/bin/phpunit"
+    },
+    "config" : {
+        "sort-packages" : true
+    },
+    "extra" : {
+        "laravel" : {
+            "providers" : [
+                "TomSchlick\\RequestMigrations\\RequestMigrationsServiceProvider"
+            ],
+            "aliases" : {
+
+            }
+        }
+    }
+}
