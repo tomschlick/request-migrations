@@ -9,7 +9,6 @@ env:
   matrix:
     - COMPOSER_FLAGS="--prefer-lowest"
     - COMPOSER_FLAGS=""
-    fast_finish: true
 
 sudo: false
 
