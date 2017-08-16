@@ -14,7 +14,7 @@ abstract class RequestMigration
      *
      * @return \Illuminate\Http\Request
      */
-    public abstract function migrateRequest(Request $request) : Request;
+    abstract public function migrateRequest(Request $request) : Request;
 
     /**
      * Migrate the response to display to the client.
@@ -23,12 +23,12 @@ abstract class RequestMigration
      *
      * @return \Illuminate\Http\Response
      */
-    public abstract function migrateResponse(Response $response) : Response;
+    abstract public function migrateResponse(Response $response) : Response;
 
     /**
      * Define which named routes should this migration modify.
      *
      * @return array
      */
-    public abstract function routes() : array;
+    abstract public function routes() : array;
 }
