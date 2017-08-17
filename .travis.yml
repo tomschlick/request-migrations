@@ -5,11 +5,6 @@ php:
   - 7.1
   - 7.2
 
-env:
-  matrix:
-    - COMPOSER_FLAGS="--prefer-lowest"
-    - COMPOSER_FLAGS=""
-
 sudo: false
 
 cache:
@@ -18,7 +13,7 @@ cache:
 
 before_script:
   - travis_retry composer self-update
-  - travis_retry composer update ${COMPOSER_FLAGS} --no-interaction --prefer-dist
+  - travis_retry composer update --no-interaction --prefer-dist
 
 script:
   - vendor/bin/phpunit
