@@ -16,7 +16,7 @@ class RequestMigrationsMiddleware
      */
     public function handle(Request $request, Closure $next) : Response
     {
-        $migrator = new Migrator($request);
+        $migrator = new Migrator($request, config('request-migrations'));
 
         $migrator->processResponseMigrations(
             $next(

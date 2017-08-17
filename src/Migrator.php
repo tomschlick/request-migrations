@@ -24,17 +24,24 @@ class Migrator
     protected $responseVersion = null;
 
     /**
+     * @var array
+     */
+    protected $config;
+
+    /**
      * Migrator constructor.
      *
      * @param \Illuminate\Http\Request $request
+     * @param array                    $config
      */
-    public function __construct(Request $request)
+    public function __construct(Request $request, array $config)
     {
         $this->request = $request;
+        $this->config = $config;
 
-        $this->currentVersion = config('request-migrations.current_version');
-        $this->requestVersion = $request->header(config('request-migrations.headers.request-version'));
-        $this->responseVersion = $request->header(config('request-migrations.headers.request-version'));
+        $this->currentVersion = array_get($config, 'current_version');
+        $this->requestVersion = $request->header(array_get($config, 'headers.request-version'));
+        $this->responseVersion = $request->header(array_get($config, 'headers.request-version'));
     }
 
     /**
@@ -74,9 +81,9 @@ class Migrator
      */
     public function setResponseHeaders()
     {
-        $this->response->headers->set(config('request-migrations.headers.current-version'), $this->currentVersion, true);
-        $this->response->headers->set(config('request-migrations.headers.request-version'), $this->requestVersion, true);
-        $this->response->headers->set(config('request-migrations.headers.response-version'), $this->responseVersion, true);
+        $this->response->headers->set(array_get($this->config, 'headers.current-version'), $this->currentVersion, true);
+        $this->response->headers->set(array_get($this->config, 'headers.request-version'), $this->requestVersion, true);
+        $this->response->headers->set(array_get($this->config, 'headers.response-version'), $this->responseVersion, true);
     }
 
     /**
@@ -97,7 +104,7 @@ class Migrator
         $needed = [];
 
         // TODO: Refactor this to use collections
-        foreach (config('request-migrations.versions') as $version => $classList) {
+        foreach (array_get($this->config, 'versions', []) as $version => $classList) {
             $items = [];
 
             if ($version <= $this->requestVersion) {
