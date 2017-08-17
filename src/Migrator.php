@@ -44,7 +44,7 @@ class Migrator
      */
     public function processRequestMigrations() : Request
     {
-        foreach ($this->neededMigrations() as $version => $migrations) {
+        foreach (array_reverse($this->neededMigrations()) as $version => $migrations) {
             foreach ($migrations as $migration) {
                 $this->request = (new $migration())->migrateRequest($this->request);
             }
