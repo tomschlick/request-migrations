@@ -3,7 +3,7 @@
 namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 abstract class RequestMigration
 {
@@ -19,9 +19,9 @@ abstract class RequestMigration
     /**
      * Migrate the response to display to the client.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response$response
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     abstract public function migrateResponse(Response $response) : Response;
 

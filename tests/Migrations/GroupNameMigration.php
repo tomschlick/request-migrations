@@ -3,7 +3,7 @@
 namespace TomSchlick\RequestMigrations\Tests\Migrations;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 use TomSchlick\RequestMigrations\RequestMigration;
 
 class GroupNameMigration extends RequestMigration
@@ -25,7 +25,7 @@ class GroupNameMigration extends RequestMigration
      *
      * @param \Illuminate\Http\Response $response
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response
      */
     public function migrateResponse(Response $response) : Response
     {
