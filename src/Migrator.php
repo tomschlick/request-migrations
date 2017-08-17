@@ -100,7 +100,7 @@ class Migrator
         foreach (config('request-migrations.versions') as $version => $classList) {
             $items = [];
 
-            if($version <= $this->requestVersion) {
+            if ($version <= $this->requestVersion) {
                 continue;
             }
 
