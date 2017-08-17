@@ -50,12 +50,17 @@ abstract class TestCase extends Orchestra
                 'response-version' => 'x-api-response-version',
             ],
 
-            'current_version' => '2017-03-03',
+            'current_version' => '2017-04-04',
 
             'versions' => [
+                '2017-04-04' => [
+
+                ],
+
                 '2017-03-03' => [
                     GroupNameMigration::class,
                 ],
+
                 '2017-02-02' => [
 
                 ],
