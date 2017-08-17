@@ -57,10 +57,10 @@ abstract class TestCase extends Orchestra
                     GroupNameMigration::class,
                 ],
                 '2017-02-02' => [
-                    // \App\Http\Migrations\ExampleChangeFieldName::class
+
                 ],
                 '2017-01-01' => [
-                    // \App\Http\Migrations\ExampleChangeFieldName::class
+
                 ],
             ],
         ]);
