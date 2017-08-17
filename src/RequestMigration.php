@@ -26,9 +26,9 @@ abstract class RequestMigration
     abstract public function migrateResponse(Response $response) : Response;
 
     /**
-     * Define which named routes should this migration modify.
+     * Define which named paths should this migration modify.
      *
      * @return array
      */
-    abstract public function routes() : array;
+    abstract public function paths() : array;
 }

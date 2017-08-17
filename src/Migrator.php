@@ -33,7 +33,8 @@ class Migrator
         $this->request = $request;
 
         $this->currentVersion = config('request-migrations.current_version');
-        $this->requestVersion = $request->header('x-api-request-version');
+        $this->requestVersion = $request->header(config('request-migrations.headers.request-version'));
+        $this->responseVersion = $request->header(config('request-migrations.headers.request-version'));
     }
 
     /**
@@ -43,8 +44,10 @@ class Migrator
      */
     public function processRequestMigrations() : Request
     {
-        foreach ($this->neededMigrations() as $migration) {
-            $this->request = (new $migration())->migrateRequest($this->request);
+        foreach ($this->neededMigrations() as $version => $migrations) {
+            foreach ($migrations as $migration) {
+                $this->request = (new $migration())->migrateRequest($this->request);
+            }
         }
 
         return $this->request;
@@ -59,8 +62,10 @@ class Migrator
     {
         $this->response = $response;
 
-        foreach ($this->neededMigrations() as $migration) {
-            $this->response = (new $migration())->migrateResponse($this->response);
+        foreach ($this->neededMigrations() as $version => $migrations) {
+            foreach ($migrations as $migration) {
+                $this->response = (new $migration())->migrateResponse($this->response);
+            }
         }
     }
 
@@ -69,8 +74,9 @@ class Migrator
      */
     public function setResponseHeaders()
     {
-        $this->response->headers->set('x-api-request-version', $this->requestVersion, false);
-        $this->response->headers->set('x-api-response-version', $this->responseVersion, false);
+        $this->response->headers->set(config('request-migrations.headers.current-version'), $this->currentVersion, true);
+        $this->response->headers->set(config('request-migrations.headers.request-version'), $this->requestVersion, true);
+        $this->response->headers->set(config('request-migrations.headers.response-version'), $this->responseVersion, true);
     }
 
     /**
@@ -89,16 +95,21 @@ class Migrator
     public function neededMigrations() : array
     {
         $needed = [];
-        $routeName = $this->request->route()->getName();
 
         // TODO: Refactor this to use collections
         foreach (config('request-migrations.versions') as $version => $classList) {
             $items = [];
 
+            if($version <= $this->requestVersion) {
+                continue;
+            }
+
             foreach ($classList as $class) {
                 $migration = (new $class());
-                if (in_array($routeName, $migration->routes())) {
-                    $items[] = $class;
+                foreach ($migration->paths() as $path) {
+                    if ($this->request->is($path)) {
+                        $items[] = $class;
+                    }
                 }
             }
 
