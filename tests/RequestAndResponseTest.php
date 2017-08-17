@@ -2,7 +2,7 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
-class ExampleTest extends TestCase
+class RequestAndResponseTest extends TestCase
 {
     public function setUp()
     {
