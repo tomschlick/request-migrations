@@ -101,30 +101,15 @@ class Migrator
      */
     public function neededMigrations() : array
     {
-        $needed = [];
-
-        // TODO: Refactor this to use collections
-        foreach (array_get($this->config, 'versions', []) as $version => $classList) {
-            $items = [];
-
-            if ($version <= $this->requestVersion) {
-                continue;
-            }
-
-            foreach ($classList as $class) {
-                $migration = (new $class());
-                foreach ($migration->paths() as $path) {
-                    if ($this->request->is($path)) {
-                        $items[] = $class;
-                    }
-                }
-            }
-
-            if (count($items)) {
-                $needed[$version] = $items;
-            }
-        }
-
-        return $needed;
+        return collect(array_get($this->config, 'versions', []))
+            ->reject(function ($classList, $version) {
+                return $version <= $this->requestVersion;
+            })->filter(function ($classList) {
+                return collect($classList)->transform(function ($class) {
+                    return collect((new $class)->paths())->filter(function ($path) {
+                        return $this->request->is($path);
+                    });
+                })->isNotEmpty();
+            })->toArray();
     }
 }
