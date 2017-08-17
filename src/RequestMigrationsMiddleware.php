@@ -4,7 +4,7 @@ namespace TomSchlick\RequestMigrations;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use \Symfony\Component\HttpFoundation\Response;
 
 class RequestMigrationsMiddleware
 {
@@ -12,7 +12,7 @@ class RequestMigrationsMiddleware
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
      *
-     * @return \Illuminate\Http\Response
+     * @return \Symfony\Component\HttpFoundation\Response;
      */
     public function handle(Request $request, Closure $next) : Response
     {
