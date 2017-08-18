@@ -3,7 +3,7 @@
 namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
+use Symfony\Component\HttpFoundation\Response;
 
 class Migrator
 {
@@ -63,7 +63,7 @@ class Migrator
     /**
      * Process the migrations for the outgoing response.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response $response
      */
     public function processResponseMigrations(Response $response)
     {
