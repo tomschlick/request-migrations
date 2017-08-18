@@ -4,11 +4,6 @@ namespace TomSchlick\RequestMigrations\Tests;
 
 class RequestAndResponseTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-    }
-
     /** @test */
     public function it_will_get_an_unmodified_user_object()
     {
