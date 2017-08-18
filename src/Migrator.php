@@ -3,6 +3,8 @@
 namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
+use Illuminate\Support\Collection;
 use Symfony\Component\HttpFoundation\Response;
 
 class Migrator
@@ -39,9 +41,9 @@ class Migrator
         $this->request = $request;
         $this->config = $config;
 
-        $this->currentVersion = array_get($config, 'current_version');
-        $this->requestVersion = $request->header(array_get($config, 'headers.request-version'));
-        $this->responseVersion = $request->header(array_get($config, 'headers.request-version'));
+        $this->currentVersion = Arr::get($config, 'current_version');
+        $this->requestVersion = $request->header(Arr::get($config, 'headers.request-version'));
+        $this->responseVersion = $request->header(Arr::get($config, 'headers.request-version'));
     }
 
     /**
@@ -81,9 +83,9 @@ class Migrator
      */
     public function setResponseHeaders()
     {
-        $this->response->headers->set(array_get($this->config, 'headers.current-version'), $this->currentVersion, true);
-        $this->response->headers->set(array_get($this->config, 'headers.request-version'), $this->requestVersion, true);
-        $this->response->headers->set(array_get($this->config, 'headers.response-version'), $this->responseVersion, true);
+        $this->response->headers->set(Arr::get($this->config, 'headers.current-version'), $this->currentVersion, true);
+        $this->response->headers->set(Arr::get($this->config, 'headers.request-version'), $this->requestVersion, true);
+        $this->response->headers->set(Arr::get($this->config, 'headers.response-version'), $this->responseVersion, true);
     }
 
     /**
@@ -101,12 +103,12 @@ class Migrator
      */
     public function neededMigrations() : array
     {
-        return collect(array_get($this->config, 'versions', []))
+        return Collection::make(Arr::get($this->config, 'versions', []))
             ->reject(function ($classList, $version) {
                 return $version <= $this->requestVersion;
             })->filter(function ($classList) {
-                return collect($classList)->transform(function ($class) {
-                    return collect((new $class)->paths())->filter(function ($path) {
+                return Collection::make($classList)->transform(function ($class) {
+                    return Collection::make((new $class)->paths())->filter(function ($path) {
                         return $this->request->is($path);
                     });
                 })->isNotEmpty();
