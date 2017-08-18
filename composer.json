@@ -20,10 +20,10 @@
     ],
     "require" : {
         "php" : "^7.0",
-        "illuminate/config" : "^5.4",
-        "illuminate/contracts" : "^5.4",
-        "illuminate/http" : "^5.4",
-        "illuminate/support" : "^5.4"
+        "illuminate/config" : "5.4.*|5.5.*",
+        "illuminate/contracts" : "5.4.*|5.5.*",
+        "illuminate/http" : "5.4.*|5.5.*",
+        "illuminate/support" : "5.4.*|5.5.*"
     },
     "require-dev" : {
         "phpunit/phpunit" : "^6.0",
