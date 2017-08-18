@@ -4,6 +4,7 @@ namespace TomSchlick\RequestMigrations;
 
 use Closure;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 
 class RequestMigrationsMiddleware
@@ -16,7 +17,7 @@ class RequestMigrationsMiddleware
      */
     public function handle(Request $request, Closure $next) : Response
     {
-        $migrator = new Migrator($request, config('request-migrations'));
+        $migrator = new Migrator($request, Config::get('request-migrations'));
 
         $migrator->processResponseMigrations(
             $next(
