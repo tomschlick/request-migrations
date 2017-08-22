@@ -26,12 +26,12 @@ class RequestMigrationsServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'request-migrations');
 
-        $this->app->singleton('command.request-migration', function ($app) {
+        $this->app->singleton('command.request-migration.make', function ($app) {
             return new RequestMigrationMakeCommand($app['files']);
         });
 
         $this->commands([
-            'command.request-migration',
+            'command.request-migration.make',
         ]);
     }
 }
