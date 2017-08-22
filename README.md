@@ -44,9 +44,16 @@ php artisan vendor:publish --provider="TomSchlick\RequestMigrations\RequestMigra
 
 ## Usage
 
-```php
+### Creating a Migration
+
+You can generate a new request migration using the Artisan CLI.
+
+```shell
+php artisan make:request-migration ExampleMigration
 
 ```
+
+The command will generate an request migration and publish it to `App/Http/Requests/Migrations/*`.
 
 ## Changelog
 
