@@ -4,7 +4,7 @@
 [![Build Status](https://img.shields.io/travis/tomschlick/request-migrations/master.svg?style=flat-square)](https://travis-ci.org/tomschlick/request-migrations)
 [![StyleCI](https://styleci.io/repos/100408108/shield)](https://styleci.io/repos/100408108)
 
-This package is based on the [API versioning scheme used at Stripe](https://stripe.com/blog/api-versioning). Basically, instead of using /v1, /v2, etc in your urls; Users pass a version header and you automatically migrate the request & response data to match the current version of your code.
+This package is based on the [API versioning scheme used at Stripe](https://stripe.com/blog/api-versioning). Users pass a version header and you automatically migrate the request & response data to match the current version of your code.
 
 ## Installation
 
