@@ -28,7 +28,7 @@ class RequestMigrationMakeCommand extends GeneratorCommand
     {
         parent::handle();
     }
-    
+
     /**
      * Get the stub file for the generator.
      *
