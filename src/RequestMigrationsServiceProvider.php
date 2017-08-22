@@ -3,6 +3,7 @@
 namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Support\ServiceProvider;
+use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;
 
 class RequestMigrationsServiceProvider extends ServiceProvider
 {
@@ -24,5 +25,13 @@ class RequestMigrationsServiceProvider extends ServiceProvider
     public function register()
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'request-migrations');
+
+        $this->app->singleton('command.request-migration', function ($app) {
+            return new RequestMigrationMakeCommand($app['files']);
+        });
+
+        $this->commands([
+            'command.request-migration',
+        ]);
     }
 }
