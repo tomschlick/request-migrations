@@ -12,6 +12,7 @@ class RequestMigrationMakeCommand extends GeneratorCommand
      * @var string
      */
     protected $name = 'make:request-migration';
+
     /**
      * The console command description.
      *
@@ -36,17 +37,18 @@ class RequestMigrationMakeCommand extends GeneratorCommand
      */
     protected function getStub()
     {
-        return __DIR__.'/../../stubs/migration.stub';
+        return __DIR__ . '/../../stubs/migration.stub';
     }
 
     /**
      * Get the default namespace for the class.
      *
-     * @param  string  $rootNamespace
+     * @param  string $rootNamespace
+     *
      * @return string
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace.'\Http\Requests\Migrations';
+        return $rootNamespace . '\Http\Migrations';
     }
 }
