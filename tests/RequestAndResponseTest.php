@@ -2,6 +2,8 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
+use Symfony\Component\HttpKernel\Exception\HttpException;
+
 class RequestAndResponseTest extends TestCase
 {
     /** @test */
@@ -40,5 +42,25 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
         $response->assertHeader('x-api-response-version', '2017-01-01');
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_if_the_request_version_is_invalid()
+    {
+        $this->expectException(HttpException::class);
+
+        $this->get('/users/show', [
+            'x-api-request-version'  => '2016-03-03',
+        ])->json();
+    }
+
+    /** @test */
+    public function it_will_throw_an_exception_if_the_response_version_is_invalid()
+    {
+        $this->expectException(HttpException::class);
+
+        $this->get('/users/show', [
+            'x-api-response-version'  => '2016-03-03',
+        ])->json();
     }
 }
