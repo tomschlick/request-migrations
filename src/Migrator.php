@@ -43,7 +43,7 @@ class Migrator
 
         $this->currentVersion = Arr::get($config, 'current_version');
         $this->requestVersion = $request->header(Arr::get($config, 'headers.request-version'));
-        $this->responseVersion = $request->header(Arr::get($config, 'headers.request-version'));
+        $this->responseVersion = $request->header(Arr::get($config, 'headers.response-version'));
     }
 
     /**
