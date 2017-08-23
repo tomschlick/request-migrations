@@ -18,11 +18,11 @@ class RequestMigrationsMiddleware
      */
     public function handle(Request $request, Closure $next) : Response
     {
-        if (! in_array($this->requestVersion($request), $this->versions())) {
+        if ($this->requestVersion($request) && ! in_array($this->requestVersion($request), $this->versions())) {
             throw new HttpException(400, 'The request version is invalid');
         }
 
-        if (! in_array($this->responseVersion($request), $this->versions())) {
+        if ($this->responseVersion($request) && ! in_array($this->responseVersion($request), $this->versions())) {
             throw new HttpException(400, 'The response version is invalid');
         }
 
@@ -56,7 +56,7 @@ class RequestMigrationsMiddleware
      */
     private function requestVersion(Request $request) : string
     {
-        return $request->header(Config::get('request-migrations.headers.request-version'));
+        return $request->header(Config::get('request-migrations.headers.request-version'), '');
     }
 
     /**
@@ -68,6 +68,6 @@ class RequestMigrationsMiddleware
      */
     private function responseVersion(Request $request) : string
     {
-        return $request->header(Config::get('request-migrations.headers.response-version'));
+        return $request->header(Config::get('request-migrations.headers.response-version'), '');
     }
 }
