@@ -43,7 +43,7 @@ class Migrator
 
         $this->currentVersion = Arr::get($config, 'current_version');
         $this->requestVersion = $request->header(Arr::get($config, 'headers.request-version'));
-        $this->responseVersion = $request->header(Arr::get($config, 'headers.request-version'));
+        $this->responseVersion = $request->header(Arr::get($config, 'headers.response-version'));
     }
 
     /**
@@ -53,11 +53,14 @@ class Migrator
      */
     public function processRequestMigrations() : Request
     {
-        foreach ($this->neededMigrations() as $version => $migrations) {
-            foreach ($migrations as $migration) {
+        collect($this->neededMigrations($this->requestVersion))
+            ->transform(function ($migrations) {
+                return collect($migrations)->flatten();
+            })
+            ->flatten()
+            ->each(function ($migration) {
                 $this->request = (new $migration())->migrateRequest($this->request);
-            }
-        }
+            });
 
         return $this->request;
     }
@@ -71,11 +74,15 @@ class Migrator
     {
         $this->response = $response;
 
-        foreach (array_reverse($this->neededMigrations()) as $version => $migrations) {
-            foreach ($migrations as $migration) {
+        collect($this->neededMigrations($this->responseVersion))
+            ->reverse()
+            ->transform(function ($migrations) {
+                return collect($migrations);
+            })
+            ->flatten()
+            ->each(function ($migration) {
                 $this->response = (new $migration())->migrateResponse($this->response);
-            }
-        }
+            });
     }
 
     /**
@@ -99,13 +106,15 @@ class Migrator
     /**
      * Figure out which migrations apply to the current request.
      *
+     * @param $migrationVersion The migration version to check migrations against
+     *
      * @return array
      */
-    public function neededMigrations() : array
+    public function neededMigrations($migrationVersion) : array
     {
         return Collection::make(Arr::get($this->config, 'versions', []))
-            ->reject(function ($classList, $version) {
-                return $version <= $this->requestVersion;
+            ->reject(function ($classList, $version) use ($migrationVersion) {
+                return $version <= $migrationVersion;
             })->filter(function ($classList) {
                 return Collection::make($classList)->transform(function ($class) {
                     return Collection::make((new $class)->paths())->filter(function ($path) {
