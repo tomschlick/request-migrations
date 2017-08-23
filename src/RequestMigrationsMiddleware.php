@@ -20,9 +20,7 @@ class RequestMigrationsMiddleware
         $migrator = new Migrator($request, Config::get('request-migrations'));
 
         $migrator->processResponseMigrations(
-            $next(
-                $migrator->processRequestMigrations()
-            )
+            $next($migrator->processRequestMigrations())
         );
 
         $migrator->setResponseHeaders();
