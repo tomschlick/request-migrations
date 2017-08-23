@@ -53,7 +53,7 @@ php artisan make:request-migration ExampleMigration
 
 ```
 
-The command will generate an request migration and publish it to `App/Http/Requests/Migrations/*`.
+The command will generate a request migration and publish it to `App/Http/Migrations/*`.
 
 ## Changelog
 
