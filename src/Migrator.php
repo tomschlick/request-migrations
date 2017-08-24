@@ -53,9 +53,9 @@ class Migrator
      */
     public function processRequestMigrations() : Request
     {
-        collect($this->neededMigrations($this->requestVersion))
+        Collection::make($this->neededMigrations($this->requestVersion))
             ->transform(function ($migrations) {
-                return collect($migrations)->flatten();
+                return Collection::make($migrations)->flatten();
             })
             ->flatten()
             ->each(function ($migration) {
@@ -74,10 +74,10 @@ class Migrator
     {
         $this->response = $response;
 
-        collect($this->neededMigrations($this->responseVersion))
+        Collection::make($this->neededMigrations($this->responseVersion))
             ->reverse()
             ->transform(function ($migrations) {
-                return collect($migrations);
+                return Collection::make($migrations);
             })
             ->flatten()
             ->each(function ($migration) {
