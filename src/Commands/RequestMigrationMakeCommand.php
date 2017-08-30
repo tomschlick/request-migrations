@@ -86,6 +86,6 @@ class RequestMigrationMakeCommand extends GeneratorCommand
      */
     protected function getDefaultNamespace($rootNamespace)
     {
-        return $rootNamespace . '\http\Migrations\Version_'.str_replace('-', '_', $this->version);
+        return $rootNamespace . '\Http\Migrations\Version_'.str_replace('-', '_', $this->version);
     }
 }
