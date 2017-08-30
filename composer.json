@@ -51,7 +51,7 @@
                 "TomSchlick\\RequestMigrations\\RequestMigrationsServiceProvider"
             ],
             "aliases" : {
-
+                "RequestMigrations": "TomSchlick\\RequestMigrations\\Facades\\RequestMigrations"
             }
         }
     }
