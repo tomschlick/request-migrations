@@ -43,7 +43,7 @@ class Migrator
     }
 
     /**
-     * Set the request
+     * Set the request and the versions from the request headers.
      *
      * @param Request $request
      * @return Migrator
@@ -58,7 +58,7 @@ class Migrator
     }
 
     /**
-     * Set the response version
+     * Set the response version.
      *
      * @param string $version
      * @return Migrator
@@ -71,7 +71,8 @@ class Migrator
     }
 
     /**
-     * Set the request version
+     * Set the request version.
+     *
      * @param string $version
      * @return Migrator
      */
@@ -83,7 +84,7 @@ class Migrator
     }
 
     /**
-     * Set both the response and request version
+     * Set both the response and request version.
      *
      * @param string $version
      * @return Migrator

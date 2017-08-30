@@ -2,7 +2,6 @@
 
 namespace TomSchlick\RequestMigrations;
 
-use Illuminate\Container\Container;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;

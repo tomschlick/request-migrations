@@ -2,9 +2,6 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
-use Illuminate\Http\Request;
-use TomSchlick\RequestMigrations\Migrator;
-
 class MigratorTest extends TestCase
 {
     public function setUp()
