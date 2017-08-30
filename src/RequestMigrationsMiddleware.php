@@ -15,6 +15,7 @@ class RequestMigrationsMiddleware
      */
     protected $request;
     protected $versions;
+    protected $currentVersion;
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -26,6 +27,12 @@ class RequestMigrationsMiddleware
     {
         $this->request = $request;
 
+        $this->currentVersion = config('request-migrations.current_version');
+
+        if(empty($this->currentVersion)) {
+            $this->currentVersion = $this->versions->keys()->first();
+        }
+
         if($request->user() && $request->user()->api_version) {
             $this->setRequestVersion($request->user()->api_version);
             $this->setResponseVersion($request->user()->api_version);
@@ -34,12 +41,18 @@ class RequestMigrationsMiddleware
         $requestVersion = $this->requestVersion();
         $responseVersion = $this->responseVersion();
 
-
-        if ($requestVersion && ! array_key_exists($requestVersion, $this->versions())) {
+        if (
+            ($requestVersion !== $this->currentVersion) &&
+            ($requestVersion && ! array_key_exists($requestVersion, $this->versions()))
+        ) {
             throw new HttpException(400, 'The request version is invalid');
         }
 
-        if ($responseVersion && ! array_key_exists($responseVersion, $this->versions())) {
+        if (
+            ($responseVersion !== $this->currentVersion) &&
+            ($responseVersion && ! array_key_exists($responseVersion, $this->versions()))
+        ) {
+
             throw new HttpException(400, 'The response version is invalid');
         }
 
@@ -73,7 +86,7 @@ class RequestMigrationsMiddleware
      */
     private function requestVersion() : string
     {
-        return $this->request->header(config('request-migrations.headers.request-version'), '');
+        return $this->request->header(config('request-migrations.headers.request-version'), $this->currentVersion);
     }
 
     /**
@@ -83,7 +96,7 @@ class RequestMigrationsMiddleware
      */
     private function responseVersion() : string
     {
-        return $this->request->header(config('request-migrations.headers.response-version'), '');
+        return $this->request->header(config('request-migrations.headers.response-version'), $this->currentVersion);
     }
 
     /**
