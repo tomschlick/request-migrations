@@ -19,6 +19,8 @@ class Migrator
      */
     protected $response;
 
+    protected $versions;
+
     protected $currentVersion = null;
 
     protected $requestVersion = null;
@@ -41,7 +43,12 @@ class Migrator
         $this->request = $request;
         $this->config = $config;
 
+        $this->versions = app()->make('getRequestMigrationsVersions');
+
         $this->currentVersion = Arr::get($config, 'current_version');
+        if(empty($this->currentVersion)) {
+            $this->currentVersion = $this->versions->keys()->first();
+        }
         $this->requestVersion = $request->header(Arr::get($config, 'headers.request-version'));
         $this->responseVersion = $request->header(Arr::get($config, 'headers.response-version'));
     }
@@ -120,9 +127,7 @@ class Migrator
      */
     public function neededMigrations($migrationVersion) : array
     {
-        return Collection::make(
-                app()->make('getRequestMigrationsVersions')
-            )
+        return $this->versions
             ->reject(function ($classList, $version) use ($migrationVersion) {
                 return $version <= $migrationVersion;
             })

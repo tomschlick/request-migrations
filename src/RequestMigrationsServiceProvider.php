@@ -46,7 +46,7 @@ class RequestMigrationsServiceProvider extends ServiceProvider
             $cacheFile = base_path(self::REQUEST_MIGRATIONS_CACHE);
 
             if(File::exists($cacheFile)) {
-                return collect(require_once($cacheFile));
+                return collect(require($cacheFile));
             }
 
             return $this->generateRequestMigrations();

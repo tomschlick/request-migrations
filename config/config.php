@@ -22,7 +22,8 @@ return [
     | Current Version
     |--------------------------------------------------------------------------
     |
-    | This is the version users will be defaulted to
+    | This is the version users will be defaulted to. If you do not set
+    | a version the latest version will be used.
     |
     */
 
