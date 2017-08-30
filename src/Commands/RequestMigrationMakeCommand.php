@@ -3,7 +3,9 @@
 namespace TomSchlick\RequestMigrations\Commands;
 
 use Carbon\Carbon;
+use Illuminate\Support\Facades\File;
 use Illuminate\Console\GeneratorCommand;
+use TomSchlick\RequestMigrations\RequestMigrationsServiceProvider;
 
 class RequestMigrationMakeCommand extends GeneratorCommand
 {
@@ -31,7 +33,9 @@ class RequestMigrationMakeCommand extends GeneratorCommand
      */
     public function handle()
     {
-        $this->versions = app()->make('getRequestMigrationsVersions');
+        File::delete(RequestMigrationsServiceProvider::REQUEST_MIGRATIONS_CACHE);
+
+        $this->versions = app()->make('getRequestMigrationsVersions')->keys();
 
         $this->version = $this->choice(
             "Which version would you like to publish to?",
@@ -47,7 +51,8 @@ class RequestMigrationMakeCommand extends GeneratorCommand
         }
 
         if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",str_replace('_', '-', $this->version))) {
-            return $this->error('You provided a invalid date');
+            $this->error('You provided a invalid date');
+            return false;
         }
 
         parent::handle();
@@ -60,10 +65,13 @@ class RequestMigrationMakeCommand extends GeneratorCommand
      */
     protected function publishableChoices()
     {
-        return array_merge(
-            ['<comment>Create New Version</comment>'],
-            $this->versions->toArray()
-        );
+        if($this->versions) {
+            return array_merge(
+                ['<comment>Create New Version</comment>'],
+                $this->versions->toArray()
+            );
+        }
+
     }
 
     /**

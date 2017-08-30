@@ -14,6 +14,7 @@ class RequestMigrationsMiddleware
      * @var \Illuminate\Http\Request
      */
     protected $request;
+    protected $versions;
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -32,6 +33,7 @@ class RequestMigrationsMiddleware
 
         $requestVersion = $this->requestVersion();
         $responseVersion = $this->responseVersion();
+
 
         if ($requestVersion && ! array_key_exists($requestVersion, $this->versions())) {
             throw new HttpException(400, 'The request version is invalid');
@@ -57,7 +59,11 @@ class RequestMigrationsMiddleware
      */
     private function versions() : array
     {
-        return app()->make('getRequestMigrationsVersions')->toArray();
+        if($this->versions) {
+            return $this->versions;
+        }
+
+        return $this->versions = app()->make('getRequestMigrationsVersions')->toArray();
     }
 
     /**

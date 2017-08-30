@@ -4,10 +4,13 @@ namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
+use TomSchlick\RequestMigrations\Commands\CacheRequestMigrationsCommand;
 use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;
 
 class RequestMigrationsServiceProvider extends ServiceProvider
 {
+    const REQUEST_MIGRATIONS_CACHE = '/bootstrap/cache/request-migrations.php';
+
     /**
      * Bootstrap the application services.
      */
@@ -33,35 +36,53 @@ class RequestMigrationsServiceProvider extends ServiceProvider
     {
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'request-migrations');
 
-        $this->commands([RequestMigrationMakeCommand::class]);
+        $this->commands([
+            RequestMigrationMakeCommand::class,
+            CacheRequestMigrationsCommand::class,
+        ]);
 
         $this->app->bind('getRequestMigrationsVersions', function() {
 
-            $migrationsPath = app_path('Http/Migrations');
+            $cacheFile = base_path(self::REQUEST_MIGRATIONS_CACHE);
 
-            // We generate the class list dynamically instead of relying on the config
-            if(File::exists($migrationsPath)) {
-
-                return collect(File::directories($migrationsPath))
-                    ->map(function($versionDirectory) {
-                        return substr($versionDirectory, strpos($versionDirectory, 'Version_') + 8);
-                    })
-                    ->flip()
-                    ->map(function($value, $key) use($migrationsPath) {
-
-                        $files = collect();
-
-                        foreach(File::files($migrationsPath.'/Version_'.$key) as $file) {
-                            $files->push(app()->getNamespace().'Http\Migrations\Version_'.$key.'\\'.$file->getBasename('.php'));
-                        }
-
-                        return $files;
-
-                    });
+            if(File::exists($cacheFile)) {
+                return collect(require_once($cacheFile));
             }
 
-            return collect();
+            return $this->generateRequestMigrations();
+
         });
+    }
+
+    /**
+     * @return \Illuminate\Support\Collection|static
+     */
+    protected function generateRequestMigrations()
+    {
+        $migrationsPath = app_path('Http/Migrations');
+
+        // We generate the class list dynamically instead of relying on the config
+        if(File::exists($migrationsPath)) {
+
+            return collect(File::directories($migrationsPath))
+                ->map(function($versionDirectory) {
+                    return substr($versionDirectory, strpos($versionDirectory, 'Version_') + 8);
+                })
+                ->flip()
+                ->map(function($value, $key) use($migrationsPath) {
+
+                    $files = collect();
+
+                    foreach(File::files($migrationsPath.'/Version_'.$key) as $file) {
+                        $files->push(app()->getNamespace().'Http\Migrations\Version_'.$key.'\\'.$file->getBasename('.php'));
+                    }
+
+                    return $files;
+
+                });
+        }
+
+        return collect();
     }
 
     /**

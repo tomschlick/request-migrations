@@ -54,8 +54,16 @@ You can generate a new request migration using the Artisan CLI.
 php artisan make:request-migration ExampleMigration
 
 ```
-
 The command will generate a request migration and publish it to `App/Http/Migrations/Version_YYYY_MM_DD/*`.
+
+### Caching Migrations
+
+Once you move to prod you should cache the results
+
+```shell
+php artisan cache:request-migrations
+
+```
 
 ## Changelog
 
