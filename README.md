@@ -23,17 +23,6 @@ This package supports Laravel 5.5 autoloading. If you are using an earlier versi
 \TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
 ```
 
-### Middleware
-
-Add the middleware to your Http Kernel `app/Http/Kernel.php`.
-
-```php
-protected $middleware = [
-	\TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
-];
-
-```
-
 ### Configuration
 
 Run the following Artisan command to publish the package configuration to `config/request-migrations.php`.
@@ -53,7 +42,7 @@ php artisan make:request-migration ExampleMigration
 
 ```
 
-The command will generate a request migration and publish it to `App/Http/Migrations/*`.
+The command will generate a request migration and publish it to `App/Http/Migrations/Version_YYYY_MM_DD/*`.
 
 ## Changelog
 

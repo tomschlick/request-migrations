@@ -44,7 +44,7 @@ class RequestMigrationsMiddleware
      */
     private function versions() : array
     {
-        return array_keys(Config::get('request-migrations.versions'));
+        return app()->make('getRequestMigrationsVersions')->toArray();
     }
 
     /**
