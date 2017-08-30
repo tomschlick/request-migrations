@@ -4,7 +4,6 @@ namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\ServiceProvider;
-use Symfony\Component\Finder\SplFileInfo;
 use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;
 
 class RequestMigrationsServiceProvider extends ServiceProvider
@@ -40,17 +39,25 @@ class RequestMigrationsServiceProvider extends ServiceProvider
 
             $migrationsPath = app_path('Http/Migrations');
 
+            // We generate the class list dynamically instead of relying on the config
             if(File::exists($migrationsPath)) {
-                return collect(File::directories($migrationsPath))->map(function($versionDirectory) {
-                    return substr($versionDirectory, strpos($versionDirectory, 'Version_') + 8);
-                })->flip()->map(function($value, $key) use($migrationsPath) {
-                    $files = collect();
-                    /** @var SplFileInfo $file */
-                    foreach(File::files($migrationsPath.'/Version_'.$key) as $file) {
-                        $files->push(app()->getNamespace().'Http\Migrations\Version_'.$key.'\\'.$file->getBasename('.php'));
-                    }
-                    return $files;
-                });
+
+                return collect(File::directories($migrationsPath))
+                    ->map(function($versionDirectory) {
+                        return substr($versionDirectory, strpos($versionDirectory, 'Version_') + 8);
+                    })
+                    ->flip()
+                    ->map(function($value, $key) use($migrationsPath) {
+
+                        $files = collect();
+
+                        foreach(File::files($migrationsPath.'/Version_'.$key) as $file) {
+                            $files->push(app()->getNamespace().'Http\Migrations\Version_'.$key.'\\'.$file->getBasename('.php'));
+                        }
+
+                        return $files;
+
+                    });
             }
 
             return collect();
@@ -64,7 +71,10 @@ class RequestMigrationsServiceProvider extends ServiceProvider
      */
     protected function migrationHasAlreadyBeenPublished()
     {
-        $files = glob(database_path('migrations/*_add_api_version_to_users_table.php'));
-        return count($files) > 0;
+        return count(
+            glob(
+                database_path('migrations/*_add_api_version_to_users_table.php')
+            )
+        ) > 0;
     }
 }

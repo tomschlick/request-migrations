@@ -91,7 +91,7 @@ class Migrator
 
     /**
      * Set the API Response Headers.
-     * 
+     *
      * @return $this
      */
     public function setResponseHeaders()
@@ -122,9 +122,11 @@ class Migrator
     {
         return Collection::make(
                 app()->make('getRequestMigrationsVersions')
-            )->reject(function ($classList, $version) use ($migrationVersion) {
+            )
+            ->reject(function ($classList, $version) use ($migrationVersion) {
                 return $version <= $migrationVersion;
-            })->filter(function ($classList) {
+            })
+            ->filter(function ($classList) {
                 return Collection::make($classList)->transform(function ($class) {
                     return Collection::make((new $class)->paths())->filter(function ($path) {
                         return $this->request->fullUrlIs($path);

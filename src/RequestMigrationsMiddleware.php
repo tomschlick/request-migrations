@@ -45,7 +45,8 @@ class RequestMigrationsMiddleware
 
         return $migrator->processResponseMigrations(
                 $next($migrator->processRequestMigrations())
-            )->setResponseHeaders()
+            )
+            ->setResponseHeaders()
             ->getResponse();
     }
 
