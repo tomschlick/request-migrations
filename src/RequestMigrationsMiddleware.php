@@ -43,13 +43,10 @@ class RequestMigrationsMiddleware
 
         $migrator = new Migrator($request, config('request-migrations'));
 
-        $migrator->processResponseMigrations(
-            $next($migrator->processRequestMigrations())
-        );
-
-        $migrator->setResponseHeaders();
-
-        return $migrator->getResponse();
+        return $migrator->processResponseMigrations(
+                $next($migrator->processRequestMigrations())
+            )->setResponseHeaders()
+            ->getResponse();
     }
 
     /**

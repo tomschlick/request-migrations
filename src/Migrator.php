@@ -69,6 +69,8 @@ class Migrator
      * Process the migrations for the outgoing response.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
+     *
+     * @return $this
      */
     public function processResponseMigrations(Response $response)
     {
@@ -83,16 +85,22 @@ class Migrator
             ->each(function ($migration) {
                 $this->response = (new $migration())->migrateResponse($this->response);
             });
+
+        return $this;
     }
 
     /**
      * Set the API Response Headers.
+     * 
+     * @return $this
      */
     public function setResponseHeaders()
     {
         $this->response->headers->set(Arr::get($this->config, 'headers.current-version'), $this->currentVersion, true);
         $this->response->headers->set(Arr::get($this->config, 'headers.request-version'), $this->requestVersion, true);
         $this->response->headers->set(Arr::get($this->config, 'headers.response-version'), $this->responseVersion, true);
+
+        return $this;
     }
 
     /**
