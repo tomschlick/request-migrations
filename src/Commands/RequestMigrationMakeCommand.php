@@ -47,7 +47,7 @@ class RequestMigrationMakeCommand extends GeneratorCommand
         }
 
 
-        if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",$this->version)) {
+        if (!preg_match("/^[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1])$/",str_replace('_', '-', $this->version))) {
             return $this->error('You provided a invalid date');
         }
 
