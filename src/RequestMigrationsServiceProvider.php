@@ -33,9 +33,16 @@ class RequestMigrationsServiceProvider extends ServiceProvider
         $this->commands([RequestMigrationMakeCommand::class]);
 
         $this->app->bind('getRequestMigrationsVersions', function() {
-            return collect(File::directories(app_path('Http/Migrations')))->map(function($versionDirectory) {
-                return substr($versionDirectory, strpos($versionDirectory, 'Version_') + 8);
-            });
+
+            $migrationsPath = app_path('Http/Migrations');
+
+            if(File::exists($migrationsPath)) {
+                return collect(File::directories($migrationsPath))->map(function($versionDirectory) {
+                    return substr($versionDirectory, strpos($versionDirectory, 'Version_') + 8);
+                });
+            }
+
+            return collect();
         });
     }
 }
