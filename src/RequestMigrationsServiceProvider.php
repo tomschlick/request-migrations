@@ -3,7 +3,6 @@
 namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Support\Facades\File;
-use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\ServiceProvider;
 use Symfony\Component\Finder\SplFileInfo;
 use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;
@@ -20,8 +19,12 @@ class RequestMigrationsServiceProvider extends ServiceProvider
                 __DIR__ . '/../config/config.php' => config_path('request-migrations.php'),
             ], 'config');
         }
-        $kernel = $this->app[Kernel::class];
-        $kernel->pushMiddleware(\TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class);
+
+        if (!$this->migrationHasAlreadyBeenPublished()) {
+            $this->publishes([
+                __DIR__.'/database/migrations/add_api_version_to_users_table.php.stub' => database_path('migrations/'.date('Y_m_d_His').'_add_api_version_to_users_table.php'),
+            ], 'migrations');
+        }
     }
 
     /**
@@ -52,5 +55,16 @@ class RequestMigrationsServiceProvider extends ServiceProvider
 
             return collect();
         });
+    }
+
+    /**
+     * Checks to see if the migration has already been published.
+     *
+     * @return bool
+     */
+    protected function migrationHasAlreadyBeenPublished()
+    {
+        $files = glob(database_path('migrations/*_add_api_version_to_users_table.php'));
+        return count($files) > 0;
     }
 }

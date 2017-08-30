@@ -106,7 +106,7 @@ class Migrator
     /**
      * Figure out which migrations apply to the current request.
      *
-     * @param $migrationVersion The migration version to check migrations against
+     * @param $migrationVersion string The migration version to check migrations against
      *
      * @return array
      */

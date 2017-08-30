@@ -4,12 +4,17 @@ namespace TomSchlick\RequestMigrations;
 
 use Closure;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Config;
+use function array_key_exists;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
 class RequestMigrationsMiddleware
 {
+    /**
+     * @var \Illuminate\Http\Request
+     */
+    protected $request;
+
     /**
      * @param \Illuminate\Http\Request $request
      * @param \Closure                 $next
@@ -18,15 +23,25 @@ class RequestMigrationsMiddleware
      */
     public function handle(Request $request, Closure $next) : Response
     {
-        if ($this->requestVersion($request) && ! in_array($this->requestVersion($request), $this->versions())) {
+        $this->request = $request;
+
+        if($request->user() && $request->user()->api_version) {
+            $this->setRequestVersion($request->user()->api_version);
+            $this->setResponseVersion($request->user()->api_version);
+        }
+
+        $requestVersion = $this->requestVersion();
+        $responseVersion = $this->responseVersion();
+
+        if ($requestVersion && ! array_key_exists($requestVersion, $this->versions())) {
             throw new HttpException(400, 'The request version is invalid');
         }
 
-        if ($this->responseVersion($request) && ! in_array($this->responseVersion($request), $this->versions())) {
+        if ($responseVersion && ! array_key_exists($responseVersion, $this->versions())) {
             throw new HttpException(400, 'The response version is invalid');
         }
 
-        $migrator = new Migrator($request, Config::get('request-migrations'));
+        $migrator = new Migrator($request, config('request-migrations'));
 
         $migrator->processResponseMigrations(
             $next($migrator->processRequestMigrations())
@@ -50,24 +65,45 @@ class RequestMigrationsMiddleware
     /**
      * Get the request version from the request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
      * @return string
      */
-    private function requestVersion(Request $request) : string
+    private function requestVersion() : string
     {
-        return $request->header(Config::get('request-migrations.headers.request-version'), '');
+        return $this->request->header(config('request-migrations.headers.request-version'), '');
     }
 
     /**
      * Get the response version from the request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
      * @return string
      */
-    private function responseVersion(Request $request) : string
+    private function responseVersion() : string
     {
-        return $request->header(Config::get('request-migrations.headers.response-version'), '');
+        return $this->request->header(config('request-migrations.headers.response-version'), '');
+    }
+
+    /**
+     * @param $version
+     */
+    private function setRequestVersion($version)
+    {
+        $this->request->headers->set(config('request-migrations.headers.request-version'), $this->cleanVersion($version));
+    }
+
+    /**
+     * @param $version
+     */
+    private function setResponseVersion($version)
+    {
+        $this->request->headers->set(config('request-migrations.headers.response-version'), $this->cleanVersion($version));
+    }
+
+    /**
+     * @param $version
+     * @return mixed
+     */
+    private function cleanVersion($version)
+    {
+        return str_replace('-', '_', $version);
     }
 }
