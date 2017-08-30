@@ -15,7 +15,7 @@ class Migrator
     protected $request;
 
     /**
-     * @var \Illuminate\Http\Response
+     * @var \Symfony\Component\HttpFoundation\Response
      */
     protected $response;
 
@@ -33,17 +33,68 @@ class Migrator
     /**
      * Migrator constructor.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param array                    $config
+     * @param array $config
      */
-    public function __construct(Request $request, array $config)
+    public function __construct(array $config)
     {
-        $this->request = $request;
         $this->config = $config;
 
         $this->currentVersion = Arr::get($config, 'current_version');
-        $this->requestVersion = $request->header(Arr::get($config, 'headers.request-version'));
-        $this->responseVersion = $request->header(Arr::get($config, 'headers.response-version'));
+    }
+
+    /**
+     * Set the request and the versions from the request headers.
+     *
+     * @param Request $request
+     * @return Migrator
+     */
+    public function setRequest(Request $request) : Migrator
+    {
+        $this->request = $request;
+        $this->requestVersion = $this->requestVersion ?: $request->header(Arr::get($this->config, 'headers.request-version'));
+        $this->responseVersion = $this->responseVersion ?: $request->header(Arr::get($this->config, 'headers.response-version'));
+
+        return $this;
+    }
+
+    /**
+     * Set the response version.
+     *
+     * @param string $version
+     * @return Migrator
+     */
+    public function setResponseVersion(string $version) : Migrator
+    {
+        $this->responseVersion = $version;
+
+        return $this;
+    }
+
+    /**
+     * Set the request version.
+     *
+     * @param string $version
+     * @return Migrator
+     */
+    public function setRequestVersion(string $version) : Migrator
+    {
+        $this->requestVersion = $version;
+
+        return $this;
+    }
+
+    /**
+     * Set both the response and request version.
+     *
+     * @param string $version
+     * @return Migrator
+     */
+    public function setVersion(string $version) : Migrator
+    {
+        $this->requestVersion = $version;
+        $this->responseVersion = $version;
+
+        return $this;
     }
 
     /**

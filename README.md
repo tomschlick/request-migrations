@@ -55,6 +55,27 @@ php artisan make:request-migration ExampleMigration
 
 The command will generate a request migration and publish it to `App/Http/Migrations/*`.
 
+### Override the Versions
+
+```php
+use TomSchlick\RequestMigrations\Facades\RequestMigrations;
+
+// set both response & request versions
+RequestMigrations::setVersion('2017-01-01')
+
+// set the request version
+RequestMigrations::setRequestVersion('2017-01-01')
+
+// set the response version
+RequestMigrations::setResponseVersion('2017-01-01')
+```
+
+This can be useful if you are pinning the version to a user.
+
+```php
+RequestMigrations::setVersion(auth()->user()->api_version);
+```
+
 ## Changelog
 
 Please see [CHANGELOG](CHANGELOG.md) for more information what has changed recently.
