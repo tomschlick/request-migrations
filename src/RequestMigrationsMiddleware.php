@@ -16,7 +16,7 @@ class RequestMigrationsMiddleware
      */
     protected $request;
     protected $versions;
-    protected $latestMigration;
+    protected $currentVersion;
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -28,11 +28,7 @@ class RequestMigrationsMiddleware
     {
         $this->request = $request;
 
-        $this->latestMigration = $this->cleanVersion(config('request-migrations.current_version'));
-
-        if(empty($this->latestMigration)) {
-            $this->latestMigration = collect($this->versions())->keys()->last();
-        }
+        $this->currentVersion = $this->cleanVersion(config('request-migrations.current_version'));
 
         if($request->user() && $request->user()->api_version) {
             $this->setRequestVersion($request->user()->api_version);
@@ -43,17 +39,17 @@ class RequestMigrationsMiddleware
         $responseVersion = $this->responseVersion();
 
         if (
-            ($requestVersion !== $this->latestMigration) &&
-            ($requestVersion < $this->latestMigration) &&
-            ($requestVersion && ! array_key_exists($requestVersion, $this->versions()))
+            $requestVersion &&
+            $requestVersion < $this->currentVersion &&
+            ! array_key_exists($requestVersion, $this->versions())
         ) {
             throw new HttpException(400, 'The request version is invalid');
         }
 
         if (
-            ($responseVersion !== $this->latestMigration) &&
-            ($responseVersion < $this->latestMigration) &&
-            ($responseVersion && ! array_key_exists($responseVersion, $this->versions()))
+            $responseVersion &&
+            $responseVersion < $this->currentVersion &&
+            ! array_key_exists($responseVersion, $this->versions())
         ) {
 
             throw new HttpException(400, 'The response version is invalid');
