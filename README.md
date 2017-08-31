@@ -22,23 +22,14 @@ This package supports Laravel 5.5 autoloading so the service provider and facade
 If you are using an earlier version of Laravel or have autoloading disabled you need to add the service provider and facade to `config/app.php`.
 
 ```php
-
-[
-	'providers' => [
-		...
-		\TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
-		...
-	],
-	
-	...
-	
-	'aliases' => [
-		...
-		'RequestMigrations' => '\TomSchlick\RequestMigrations\Facades\RequestMigrations::class,
-		...
-	],
-]	
-	
+'providers' => [
+    \TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
+]
+```
+```php
+'aliases' => [
+    'RequestMigrations' => '\TomSchlick\RequestMigrations\Facades\RequestMigrations::class,
+]
 ```
 
 ### Middleware
