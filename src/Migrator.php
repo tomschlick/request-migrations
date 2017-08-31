@@ -19,6 +19,8 @@ class Migrator
      */
     protected $response;
 
+    protected $versions;
+
     protected $currentVersion = null;
 
     protected $requestVersion = null;
@@ -39,7 +41,13 @@ class Migrator
     {
         $this->config = $config;
 
+        $this->versions = app()->make('getRequestMigrationsVersions');
+
         $this->currentVersion = Arr::get($config, 'current_version');
+
+        if(empty($this->currentVersion)) {
+            $this->currentVersion = $this->versions->keys()->first();
+        }
     }
 
     /**
@@ -120,6 +128,8 @@ class Migrator
      * Process the migrations for the outgoing response.
      *
      * @param \Symfony\Component\HttpFoundation\Response $response
+     *
+     * @return $this
      */
     public function processResponseMigrations(Response $response)
     {
@@ -134,16 +144,22 @@ class Migrator
             ->each(function ($migration) {
                 $this->response = (new $migration())->migrateResponse($this->response);
             });
+
+        return $this;
     }
 
     /**
      * Set the API Response Headers.
+     *
+     * @return $this
      */
     public function setResponseHeaders()
     {
         $this->response->headers->set(Arr::get($this->config, 'headers.current-version'), $this->currentVersion, true);
         $this->response->headers->set(Arr::get($this->config, 'headers.request-version'), $this->requestVersion, true);
         $this->response->headers->set(Arr::get($this->config, 'headers.response-version'), $this->responseVersion, true);
+
+        return $this;
     }
 
     /**
@@ -157,19 +173,24 @@ class Migrator
     /**
      * Figure out which migrations apply to the current request.
      *
-     * @param $migrationVersion The migration version to check migrations against
+     * @param $migrationVersion string The migration version to check migrations against
      *
      * @return array
      */
     public function neededMigrations($migrationVersion) : array
     {
-        return Collection::make(Arr::get($this->config, 'versions', []))
+        if(empty($migrationVersion)) {
+            return [];
+        }
+
+        return $this->versions
             ->reject(function ($classList, $version) use ($migrationVersion) {
-                return $version <= $migrationVersion;
-            })->filter(function ($classList) {
+                return $version < $migrationVersion;
+            })
+            ->filter(function ($classList) {
                 return Collection::make($classList)->transform(function ($class) {
                     return Collection::make((new $class)->paths())->filter(function ($path) {
-                        return $this->request->is($path);
+                        return $this->request->fullUrlIs($path);
                     });
                 })->isNotEmpty();
             })->toArray();

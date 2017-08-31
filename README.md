@@ -46,10 +46,12 @@ If you are using an earlier version of Laravel or have autoloading disabled you 
 Add the middleware to your Http Kernel `app/Http/Kernel.php`.
 
 ```php
-protected $middleware = [
-	\TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
+protected $middlewareGroups = [
+        'api' => [
+            '....',
+	        \TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
+        ];
 ];
-
 ```
 
 ### Configuration
@@ -70,8 +72,16 @@ You can generate a new request migration using the Artisan CLI.
 php artisan make:request-migration ExampleMigration
 
 ```
+The command will generate a request migration and publish it to `App/Http/Migrations/Version_YYYY_MM_DD/*`.
 
-The command will generate a request migration and publish it to `App/Http/Migrations/*`.
+### Caching Migrations
+
+Once you move to prod you should cache the results
+
+```shell
+php artisan cache:request-migrations
+
+```
 
 ### Override the Versions
 
