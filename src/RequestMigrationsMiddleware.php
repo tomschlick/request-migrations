@@ -6,7 +6,6 @@ use Closure;
 use Illuminate\Http\Request;
 use function array_key_exists;
 use Illuminate\Container\Container;
-use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -17,7 +16,7 @@ class RequestMigrationsMiddleware
      */
     protected $request;
     protected $versions;
-    protected $currentVersion;
+    protected $latestMigration;
 
     /**
      * @param \Illuminate\Http\Request $request
@@ -29,10 +28,10 @@ class RequestMigrationsMiddleware
     {
         $this->request = $request;
 
-        $this->currentVersion = config('request-migrations.current_version');
+        $this->latestMigration = $this->cleanVersion(config('request-migrations.current_version'));
 
-        if(empty($this->currentVersion)) {
-            $this->currentVersion = $this->versions->keys()->first();
+        if(empty($this->latestMigration)) {
+            $this->latestMigration = collect($this->versions())->keys()->last();
         }
 
         if($request->user() && $request->user()->api_version) {
@@ -44,14 +43,16 @@ class RequestMigrationsMiddleware
         $responseVersion = $this->responseVersion();
 
         if (
-            ($requestVersion !== $this->currentVersion) &&
+            ($requestVersion !== $this->latestMigration) &&
+            ($requestVersion < $this->latestMigration) &&
             ($requestVersion && ! array_key_exists($requestVersion, $this->versions()))
         ) {
             throw new HttpException(400, 'The request version is invalid');
         }
 
         if (
-            ($responseVersion !== $this->currentVersion) &&
+            ($responseVersion !== $this->latestMigration) &&
+            ($responseVersion < $this->latestMigration) &&
             ($responseVersion && ! array_key_exists($responseVersion, $this->versions()))
         ) {
 
@@ -88,7 +89,7 @@ class RequestMigrationsMiddleware
      */
     private function requestVersion() : string
     {
-        return $this->request->header(config('request-migrations.headers.request-version'), $this->currentVersion);
+        return $this->request->header(config('request-migrations.headers.request-version'), '');
     }
 
     /**
@@ -98,7 +99,7 @@ class RequestMigrationsMiddleware
      */
     private function responseVersion() : string
     {
-        return $this->request->header(config('request-migrations.headers.response-version'), $this->currentVersion);
+        return $this->request->header(config('request-migrations.headers.response-version'), '');
     }
 
     /**

@@ -5,8 +5,8 @@ namespace TomSchlick\RequestMigrations;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
-use TomSchlick\RequestMigrations\Commands\CacheRequestMigrationsCommand;
 use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;
+use TomSchlick\RequestMigrations\Commands\CacheRequestMigrationsCommand;
 
 class RequestMigrationsServiceProvider extends ServiceProvider
 {
