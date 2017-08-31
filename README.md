@@ -15,12 +15,30 @@ You can install the package via composer:
 ```bash
 composer require tomschlick/request-migrations
 ```
-### Service Provider
+### Service Provider & Facade
 
-This package supports Laravel 5.5 autoloading. If you are using an earlier version of Laravel or have autoloading disabled you need to add the service provider to `config/app.php`.
+This package supports Laravel 5.5 autoloading so the service provider and facade will be loaded automatically. 
+
+If you are using an earlier version of Laravel or have autoloading disabled you need to add the service provider and facade to `config/app.php`.
 
 ```php
-\TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
+
+[
+	'providers' => [
+		...
+		\TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
+		...
+	],
+	
+	...
+	
+	'aliases' => [
+		...
+		'RequestMigrations' => '\TomSchlick\RequestMigrations\Facades\RequestMigrations::class,
+		...
+	],
+]	
+	
 ```
 
 ### Middleware
@@ -63,6 +81,27 @@ Once you move to prod you should cache the results
 ```shell
 php artisan cache:request-migrations
 
+```
+
+### Override the Versions
+
+```php
+use TomSchlick\RequestMigrations\Facades\RequestMigrations;
+
+// set both response & request versions
+RequestMigrations::setVersion('2017-01-01')
+
+// set the request version
+RequestMigrations::setRequestVersion('2017-01-01')
+
+// set the response version
+RequestMigrations::setResponseVersion('2017-01-01')
+```
+
+This can be useful if you are pinning the version to a user.
+
+```php
+RequestMigrations::setVersion(auth()->user()->api_version);
 ```
 
 ## Changelog

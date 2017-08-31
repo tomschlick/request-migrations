@@ -5,6 +5,8 @@ namespace TomSchlick\RequestMigrations;
 use Closure;
 use Illuminate\Http\Request;
 use function array_key_exists;
+use Illuminate\Container\Container;
+use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 
@@ -56,7 +58,7 @@ class RequestMigrationsMiddleware
             throw new HttpException(400, 'The response version is invalid');
         }
 
-        $migrator = new Migrator($request, config('request-migrations'));
+        $migrator = Container::getInstance()->make(Migrator::class)->setRequest($request);
 
         return $migrator->processResponseMigrations(
                 $next($migrator->processRequestMigrations())

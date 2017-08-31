@@ -3,6 +3,7 @@
 namespace TomSchlick\RequestMigrations;
 
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Config;
 use Illuminate\Support\ServiceProvider;
 use TomSchlick\RequestMigrations\Commands\CacheRequestMigrationsCommand;
 use TomSchlick\RequestMigrations\Commands\RequestMigrationMakeCommand;
@@ -34,6 +35,12 @@ class RequestMigrationsServiceProvider extends ServiceProvider
      */
     public function register()
     {
+        $this->app->singleton(Migrator::class, function () {
+            return new Migrator(Config::get('request-migrations'));
+        });
+
+        $this->app->alias(Migrator::class, 'request-migrations');
+
         $this->mergeConfigFrom(__DIR__ . '/../config/config.php', 'request-migrations');
 
         $this->commands([

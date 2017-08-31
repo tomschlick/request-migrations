@@ -12,6 +12,6 @@ class MigratorTest extends TestCase
     /** @test */
     public function it_will_only_get_versions_behind_current()
     {
-        //
+        $this->markTestIncomplete();
     }
 }
