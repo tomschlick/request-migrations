@@ -2,6 +2,7 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
+use Illuminate\Support\Facades\Event;
 use TomSchlick\RequestMigrations\Events\RequestHasMigrated;
 use TomSchlick\RequestMigrations\Events\RequestIsMigrating;
 use TomSchlick\RequestMigrations\Events\ResponseHasMigrated;
