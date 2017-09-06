@@ -5,7 +5,11 @@ namespace TomSchlick\RequestMigrations;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
+use TomSchlick\RequestMigrations\Events\RequestIsMigrating;
+use TomSchlick\RequestMigrations\Events\ResponseHasMigrated;
+use TomSchlick\RequestMigrations\Events\ResponseIsMigrating;
 
 class Migrator
 {
@@ -110,7 +114,14 @@ class Migrator
             })
             ->flatten()
             ->each(function ($migration) {
-                $this->request = (new $migration())->migrateRequest($this->request);
+                $class = (new $migration());
+                $originalRequest = $this->request;
+
+                event(new RequestIsMigrating($class, $originalRequest));
+
+                $this->request = $class->migrateRequest($originalRequest);
+
+                event(new RequestIsMigrating($class, $originalRequest, $this->request));
             });
 
         return $this->request;
@@ -132,7 +143,14 @@ class Migrator
             })
             ->flatten()
             ->each(function ($migration) {
-                $this->response = (new $migration())->migrateResponse($this->response);
+                $class = (new $migration());
+                $originalResponse = $this->response;
+
+                event(new ResponseIsMigrating($class, $originalResponse));
+
+                $this->response = $class->migrateResponse($originalResponse);
+
+                event(new ResponseHasMigrated($class, $originalResponse, $this->response));
             });
     }
 
