@@ -23,7 +23,7 @@ class GroupNameMigration extends RequestMigration
     /**
      * Migrate the response to display to the client.
      *
-     * @param \Illuminate\Http\Response $response
+     * @param \Symfony\Component\HttpFoundation\Response $response
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
