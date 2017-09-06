@@ -114,7 +114,7 @@ class Migrator
             })
             ->flatten()
             ->each(function ($migration) {
-                $class = (new $migration());
+                $class = new $migration();
                 $originalRequest = $this->request;
 
                 Event::fire(new RequestIsMigrating($class, $originalRequest));
@@ -143,7 +143,7 @@ class Migrator
             })
             ->flatten()
             ->each(function ($migration) {
-                $class = (new $migration());
+                $class = new $migration();
                 $originalResponse = $this->response;
 
                 Event::fire(new ResponseIsMigrating($class, $originalResponse));
