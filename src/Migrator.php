@@ -117,11 +117,11 @@ class Migrator
                 $class = (new $migration());
                 $originalRequest = $this->request;
 
-                event(new RequestIsMigrating($class, $originalRequest));
+                Event::fire(new RequestIsMigrating($class, $originalRequest));
 
                 $this->request = $class->migrateRequest($originalRequest);
 
-                event(new RequestIsMigrating($class, $originalRequest, $this->request));
+                Event::fire(new RequestIsMigrating($class, $originalRequest, $this->request));
             });
 
         return $this->request;
@@ -146,11 +146,11 @@ class Migrator
                 $class = (new $migration());
                 $originalResponse = $this->response;
 
-                event(new ResponseIsMigrating($class, $originalResponse));
+                Event::fire(new ResponseIsMigrating($class, $originalResponse));
 
                 $this->response = $class->migrateResponse($originalResponse);
 
-                event(new ResponseHasMigrated($class, $originalResponse, $this->response));
+                Event::fire(new ResponseHasMigrated($class, $originalResponse, $this->response));
             });
     }
 
