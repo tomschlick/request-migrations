@@ -14,7 +14,10 @@ abstract class RequestMigration
      *
      * @return \Illuminate\Http\Request
      */
-    abstract public function migrateRequest(Request $request) : Request;
+    public function migrateRequest(Request $request) : Request
+    {
+        return $request;
+    }
 
     /**
      * Migrate the response to display to the client.
@@ -23,7 +26,10 @@ abstract class RequestMigration
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    abstract public function migrateResponse(Response $response) : Response;
+    public function migrateResponse(Response $response) : Response
+    {
+        return $response;
+    }
 
     /**
      * Define which named paths should this migration modify.
