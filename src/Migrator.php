@@ -52,7 +52,7 @@ class Migrator
      * @param Request $request
      * @return Migrator
      */
-    public function setRequest(Request $request) : Migrator
+    public function setRequest(Request $request) : self
     {
         $this->request = $request;
         $this->requestVersion = $this->requestVersion ?: $request->header(Arr::get($this->config, 'headers.request-version'));
@@ -67,7 +67,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setResponseVersion(string $version) : Migrator
+    public function setResponseVersion(string $version) : self
     {
         $this->responseVersion = $version;
 
@@ -80,7 +80,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setRequestVersion(string $version) : Migrator
+    public function setRequestVersion(string $version) : self
     {
         $this->requestVersion = $version;
 
@@ -93,7 +93,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setVersion(string $version) : Migrator
+    public function setVersion(string $version) : self
     {
         $this->requestVersion = $version;
         $this->responseVersion = $version;
@@ -182,14 +182,26 @@ class Migrator
     public function neededMigrations($migrationVersion) : array
     {
         return Collection::make(Arr::get($this->config, 'versions', []))
-            ->reject(function ($classList, $version) use ($migrationVersion) {
-                return $version <= $migrationVersion;
+            ->filter(function ($classList, $version) use ($migrationVersion) {
+                return $migrationVersion < $version;
             })->filter(function ($classList) {
-                return Collection::make($classList)->transform(function ($class) {
-                    return Collection::make((new $class)->paths())->filter(function ($path) {
-                        return $this->request->is($path);
-                    });
-                })->isNotEmpty();
+                return $this->hasMigrationForCurrentPath($classList);
             })->toArray();
+    }
+
+    /**
+     * Checks to see if any migrations should be applied to the current request route.
+     *
+     * @param array $migrationClasses
+     *
+     * @return bool
+     */
+    private function hasMigrationForCurrentPath(array $migrationClasses) : bool
+    {
+        return Collection::make($migrationClasses)->transform(function ($migrationClass) {
+            return Collection::make((new $migrationClass)->paths())->filter(function ($path) {
+                return $this->request->is($path);
+            });
+        })->isNotEmpty();
     }
 }
