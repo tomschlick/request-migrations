@@ -19,8 +19,8 @@ class RequestTest extends TestCase
             ]
         );
 
-        $response->assertExactJson([
-            'foo' => 'value'
+        $response->assertJson([
+            'request' => ['foo' => 'value']
         ]);
     }
 }

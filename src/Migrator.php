@@ -195,7 +195,7 @@ class Migrator
      *
      * @param array $migrationClasses
      *
-     * @return bool
+     * @return Collection
      */
     private function migrationsForVersion(array $migrationClasses) : Collection
     {

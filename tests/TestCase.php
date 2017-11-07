@@ -2,6 +2,7 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Http\Kernel;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
@@ -100,7 +101,7 @@ abstract class TestCase extends Orchestra
         });
 
         Route::post('request-test', function (Request $request) {
-            return $request->all();
+            return ['request' => $request->all()];
         });
 
         $app['router']->getRoutes()->refreshNameLookups();
