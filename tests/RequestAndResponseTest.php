@@ -34,8 +34,6 @@ class RequestAndResponseTest extends TestCase
     /** @test */
     public function it_does_not_run_a_migration_for_the_requested_version()
     {
-        // This test is correct
-
         $response = $this->get('/users/show', [
             'x-api-request-version'  => '2017-03-03',
             'x-api-response-version' => '2017-03-03',
@@ -54,6 +52,16 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertHeader('x-api-request-version', '2017-03-03');
         $response->assertHeader('x-api-response-version', '2017-03-03');
+    }
+
+    /** @test */
+    public function it_will_send_the_current_version()
+    {
+        $response = $this->get('/users/show', [
+            'x-api-request-version'  => '2017-03-03',
+            'x-api-response-version' => '2017-03-03',
+        ]);
+
         $response->assertHeader('x-api-current-version', '2017-04-04');
     }
 
@@ -67,10 +75,8 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'name' => [
-                'firstname' => 'Dwight',
-                'lastname'  => 'Schrute',
-            ],
+            'firstname' => 'Dwight',
+            'lastname'  => 'Schrute',
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
@@ -109,8 +115,10 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'firstname' => 'Dwight',
-            'lastname'  => 'Schrute',
+            'name' => [
+                'firstname' => 'Dwight',
+                'lastname'  => 'Schrute',
+            ],
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-04-04');
@@ -129,10 +137,8 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'name' => [
-                'firstname' => 'Dwight',
-                'lastname'  => 'Schrute',
-            ],
+            'firstname' => 'Dwight',
+            'lastname'  => 'Schrute',
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
@@ -151,11 +157,9 @@ class RequestAndResponseTest extends TestCase
         ]);
 
         $response->assertJson([
-            'id'        => 123,
-            'name' => [
+            'id' => 123,
                 'firstname' => 'Dwight',
                 'lastname'  => 'Schrute',
-            ],
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
