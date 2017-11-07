@@ -2,13 +2,17 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
+use Illuminate\Http\Request;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
 use TomSchlick\RequestMigrations\RequestMigrationsMiddleware;
 use TomSchlick\RequestMigrations\Tests\Migrations\TitleMigration;
 use TomSchlick\RequestMigrations\RequestMigrationsServiceProvider;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration;
 use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration;
 
 abstract class TestCase extends Orchestra
 {
@@ -55,9 +59,12 @@ abstract class TestCase extends Orchestra
 
             'versions' => [
                 '2017-01-01' => [],
-                '2017-02-02' => [],
+                '2017-02-02' => [
+                    PostBodyMigration::class,
+                ],
                 '2017-03-03' => [
                     GroupNameMigration::class,
+                    PostTitleMigration::class,
                 ],
                 '2017-04-04' => [
                     TitleMigration::class,
@@ -97,11 +104,35 @@ abstract class TestCase extends Orchestra
             ];
         });
 
+        Route::post('posts', function (Request $request) {
+            return ['request' => $request->all()];
+        });
+
         $app['router']->getRoutes()->refreshNameLookups();
     }
 
     protected function setUpMiddleware()
     {
         $this->app[Kernel::class]->pushMiddleware(RequestMigrationsMiddleware::class);
+    }
+
+    protected function assertMigrationEventsFired()
+    {
+        Event::assertDispatched([
+            RequestIsMigrating::class,
+            RequestHasMigrated::class,
+            ResponseIsMigrating::class,
+            ResponseHasMigrated::class,
+        ]);
+    }
+
+    protected function assertMigrationEventsDidntFire()
+    {
+        Event::assertNotDispatched([
+            RequestIsMigrating::class,
+            RequestHasMigrated::class,
+            ResponseIsMigrating::class,
+            ResponseHasMigrated::class,
+        ]);
     }
 }

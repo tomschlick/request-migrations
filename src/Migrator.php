@@ -184,9 +184,10 @@ class Migrator
         return Collection::make(Arr::get($this->config, 'versions', []))
             ->filter(function ($classList, $version) use ($migrationVersion) {
                 return $migrationVersion < $version;
-            })->filter(function ($classList) {
-                return $this->hasMigrationForCurrentPath($classList);
-            })->toArray();
+            })
+            ->transform(function ($versionMigrations) {
+                return $this->migrationsForVersion($versionMigrations);
+            })->reject->isEmpty()->toArray();
     }
 
     /**
@@ -194,14 +195,12 @@ class Migrator
      *
      * @param array $migrationClasses
      *
-     * @return bool
+     * @return Collection
      */
-    private function hasMigrationForCurrentPath(array $migrationClasses) : bool
+    private function migrationsForVersion(array $migrationClasses) : Collection
     {
-        return Collection::make($migrationClasses)->transform(function ($migrationClass) {
-            return Collection::make((new $migrationClass)->paths())->filter(function ($path) {
-                return $this->request->is($path);
-            });
-        })->isNotEmpty();
+        return Collection::make($migrationClasses)->filter(function ($migrationClass) {
+            return in_array($this->request->path(), (new $migrationClass)->paths());
+        });
     }
 }

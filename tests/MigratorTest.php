@@ -2,44 +2,16 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
-use Illuminate\Support\Facades\Event;
-use TomSchlick\RequestMigrations\Events\RequestHasMigrated;
-use TomSchlick\RequestMigrations\Events\RequestIsMigrating;
-use TomSchlick\RequestMigrations\Events\ResponseHasMigrated;
-use TomSchlick\RequestMigrations\Events\ResponseIsMigrating;
-
 class MigratorTest extends TestCase
 {
-    public function setUp()
-    {
-        parent::setUp();
-
-        Event::fake();
-    }
-
     /** @test */
-    public function it_will_only_get_versions_behind_current()
+    public function it_will_send_the_current_version()
     {
-        $this->markTestIncomplete();
-    }
-
-    protected function assertMigrationEventsFired()
-    {
-        Event::assertDispatched([
-            RequestIsMigrating::class,
-            RequestHasMigrated::class,
-            ResponseIsMigrating::class,
-            ResponseHasMigrated::class,
+        $response = $this->get('/users/show', [
+            'x-api-request-version'  => '2017-03-03',
+            'x-api-response-version' => '2017-03-03',
         ]);
-    }
 
-    protected function assertMigrationEventsDidntFire()
-    {
-        Event::assertNotDispatched([
-            RequestIsMigrating::class,
-            RequestHasMigrated::class,
-            ResponseIsMigrating::class,
-            ResponseHasMigrated::class,
-        ]);
+        $response->assertHeader('x-api-current-version', '2017-04-04');
     }
 }
