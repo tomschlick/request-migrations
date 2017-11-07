@@ -4,6 +4,7 @@ namespace TomSchlick\RequestMigrations\Tests;
 
 use Illuminate\Http\Request;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
 use TomSchlick\RequestMigrations\RequestMigrationsMiddleware;
@@ -113,5 +114,25 @@ abstract class TestCase extends Orchestra
     protected function setUpMiddleware()
     {
         $this->app[Kernel::class]->pushMiddleware(RequestMigrationsMiddleware::class);
+    }
+
+    protected function assertMigrationEventsFired()
+    {
+        Event::assertDispatched([
+            RequestIsMigrating::class,
+            RequestHasMigrated::class,
+            ResponseIsMigrating::class,
+            ResponseHasMigrated::class,
+        ]);
+    }
+
+    protected function assertMigrationEventsDidntFire()
+    {
+        Event::assertNotDispatched([
+            RequestIsMigrating::class,
+            RequestHasMigrated::class,
+            ResponseIsMigrating::class,
+            ResponseHasMigrated::class,
+        ]);
     }
 }
