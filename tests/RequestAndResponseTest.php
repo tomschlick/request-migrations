@@ -17,10 +17,8 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'   => 123,
-            'name' => [
-                'firstname' => 'Dwight',
-                'lastname'  => 'Schrute',
-            ],
+            'firstname' => 'Dwight',
+            'lastname'  => 'Schrute',
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-03-03');
@@ -37,8 +35,10 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'firstname' => 'Dwight',
-            'lastname'  => 'Schrute',
+            'name' => [
+                'firstname' => 'Dwight',
+                'lastname'  => 'Schrute',
+            ],
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
@@ -77,10 +77,8 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'name' => [
-                'firstname' => 'Dwight',
-                'lastname'  => 'Schrute',
-            ],
+            'firstname' => 'Dwight',
+            'lastname'  => 'Schrute',
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-04-04');
@@ -99,8 +97,10 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'firstname' => 'Dwight',
-            'lastname'  => 'Schrute',
+            'name' => [
+                'firstname' => 'Dwight',
+                'lastname'  => 'Schrute',
+            ],
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
@@ -120,8 +120,10 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'        => 123,
-            'firstname' => 'Dwight',
-            'lastname'  => 'Schrute',
+            'name' => [
+                'firstname' => 'Dwight',
+                'lastname'  => 'Schrute',
+            ],
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');

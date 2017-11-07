@@ -183,7 +183,7 @@ class Migrator
     {
         return Collection::make(Arr::get($this->config, 'versions', []))
             ->reject(function ($classList, $version) use ($migrationVersion) {
-                return $version <= $migrationVersion;
+                return $version > $migrationVersion;
             })->filter(function ($classList) {
                 return Collection::make($classList)->transform(function ($class) {
                     return Collection::make((new $class)->paths())->filter(function ($path) {
