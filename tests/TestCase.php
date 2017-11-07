@@ -78,7 +78,7 @@ abstract class TestCase extends Orchestra
      */
     protected function setUpRoutes($app)
     {
-        Route::get('users/show', function () {
+        Route::get('users/show', function (Request $request) {
             return [
                 'id'     => 123,
                 'name'   => [
@@ -91,16 +91,18 @@ abstract class TestCase extends Orchestra
                     'beats',
                     'battlestar galactica',
                 ],
+                'request' => $request->all(),
             ];
         });
 
-        Route::post('users', function () {
+        Route::post('users', function (Request $request) {
             return [
                 'id'        => 456,
                 'firstname' => request('firstname'),
                 'lastname'  => request('lastname'),
                 'title'     => request('title'),
                 'skills'    => request('skills'),
+                'request' => $request->all(),
             ];
         });
 

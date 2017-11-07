@@ -55,8 +55,8 @@ class Migrator
     public function setRequest(Request $request) : self
     {
         $this->request = $request;
-        $this->requestVersion = $this->requestVersion ?: $request->header(Arr::get($this->config, 'headers.request-version'));
-        $this->responseVersion = $this->responseVersion ?: $request->header(Arr::get($this->config, 'headers.response-version'));
+        $this->requestVersion = $this->requestVersion ?: $this->determineRequestVersion($request);
+        $this->responseVersion = $this->responseVersion ?: $this->determineResponseVersion($request);
 
         return $this;
     }
@@ -202,5 +202,29 @@ class Migrator
         return Collection::make($migrationClasses)->filter(function ($migrationClass) {
             return in_array($this->request->path(), (new $migrationClass)->paths());
         });
+    }
+
+    /**
+     * Determines the request version from the header defaults to current version.
+     *
+     * @param  Request $request
+     *
+     * @return  string
+     */
+    private function determineRequestVersion(Request $request) : string
+    {
+        return $request->header(Arr::get($this->config, 'headers.request-version')) ?? Arr::get($this->config, 'current_version');
+    }
+
+    /**
+     * Determines the response version from the header defaults to current version.
+     *
+     * @param  Request $request
+     *
+     * @return  string
+     */
+    private function determineResponseVersion(Request $request) : string
+    {
+        return $request->header(Arr::get($this->config, 'headers.response-version')) ?? Arr::get($this->config, 'current_version');
     }
 }
