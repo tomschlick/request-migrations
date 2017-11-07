@@ -8,7 +8,7 @@ use TomSchlick\RequestMigrations\Facades\RequestMigrations;
 class RequestAndResponseTest extends TestCase
 {
     /** @test */
-    public function it_will_migrate_through_multiple_versions()
+    public function it_will_migrate_through_response_multiple_versions()
     {
         // This test is correct
 
@@ -32,7 +32,7 @@ class RequestAndResponseTest extends TestCase
     }
 
     /** @test */
-    public function it_does_not_run_a_migration_for_the_requested_version()
+    public function it_does_not_run_a_response_migration_for_the_requested_version()
     {
         $response = $this->get('/users/show', [
             'x-api-request-version'  => '2017-03-03',
@@ -66,7 +66,7 @@ class RequestAndResponseTest extends TestCase
     }
 
     /** @test */
-    public function it_will_get_a_modified_user_object()
+    public function it_will_get_a_modified_response_object()
     {
         $response = $this->get('/users/show', [
             'x-api-request-version'  => '2017-01-01',
