@@ -47,7 +47,7 @@ class GroupNameMigration extends RequestMigration
     {
         return [
             'users/show',
-            'posts'
+            'posts',
         ];
     }
 }

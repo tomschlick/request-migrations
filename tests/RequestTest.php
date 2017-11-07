@@ -14,7 +14,7 @@ class RequestTest extends TestCase
             'posts',
             [
                 'headline' => 'This is going to be an awesome article!',
-                'content' => 'Awesome content! I told you!'
+                'content' => 'Awesome content! I told you!',
             ],
             [
                 'x-api-request-version'  => '2017-01-01',

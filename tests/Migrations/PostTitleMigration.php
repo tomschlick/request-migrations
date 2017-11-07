@@ -26,7 +26,7 @@ class PostTitleMigration extends RequestMigration
      * Define which named paths should this migration modify.
      *
      * @return array
-    */
+     */
     public function paths() : array
     {
         return [

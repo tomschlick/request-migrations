@@ -2,7 +2,6 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
-use Symfony\Component\HttpKernel\Exception\HttpException;
 use TomSchlick\RequestMigrations\Facades\RequestMigrations;
 
 class RequestAndResponseTest extends TestCase
