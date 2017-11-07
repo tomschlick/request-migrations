@@ -3,10 +3,9 @@
 namespace TomSchlick\RequestMigrations\Tests\Migrations;
 
 use Illuminate\Http\Request;
-use Symfony\Component\HttpFoundation\Response;
 use TomSchlick\RequestMigrations\RequestMigration;
 
-class RequestMigrationExample extends RequestMigration
+class PostBodyMigration extends RequestMigration
 {
     /**
      * Migrate the request for the application to "read".
@@ -17,8 +16,8 @@ class RequestMigrationExample extends RequestMigration
      */
     public function migrateRequest(Request $request) : Request
     {
-        $request['foo'] = $request['key'];
-        unset($request['key']);
+        $request['body'] = $request['content'];
+        unset($request['content']);
 
         return $request;
     }
@@ -27,11 +26,11 @@ class RequestMigrationExample extends RequestMigration
      * Define which named paths should this migration modify.
      *
      * @return array
-    */
+     */
     public function paths() : array
     {
         return [
-            'request-test',
+            'posts',
         ];
     }
 }

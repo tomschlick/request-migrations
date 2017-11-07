@@ -9,8 +9,9 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use TomSchlick\RequestMigrations\RequestMigrationsMiddleware;
 use TomSchlick\RequestMigrations\Tests\Migrations\TitleMigration;
 use TomSchlick\RequestMigrations\RequestMigrationsServiceProvider;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration;
 use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
-use TomSchlick\RequestMigrations\Tests\Migrations\RequestMigrationExample;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration;
 
 abstract class TestCase extends Orchestra
 {
@@ -57,10 +58,12 @@ abstract class TestCase extends Orchestra
 
             'versions' => [
                 '2017-01-01' => [],
-                '2017-02-02' => [],
+                '2017-02-02' => [
+                    PostBodyMigration::class,
+                ],
                 '2017-03-03' => [
                     GroupNameMigration::class,
-                    RequestMigrationExample::class,
+                    PostTitleMigration::class,
                 ],
                 '2017-04-04' => [
                     TitleMigration::class,
@@ -100,7 +103,7 @@ abstract class TestCase extends Orchestra
             ];
         });
 
-        Route::post('request-test', function (Request $request) {
+        Route::post('posts', function (Request $request) {
             return ['request' => $request->all()];
         });
 

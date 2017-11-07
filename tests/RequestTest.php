@@ -9,18 +9,22 @@ class RequestTest extends TestCase
     public function it_can_transform_a_request()
     {
         $response = $this->post(
-            'request-test',
+            'posts',
             [
-                'key' => 'value'
+                'headline' => 'This is going to be an awesome article!',
+                'content' => 'Awesome content! I told you!'
             ],
             [
-                'x-api-request-version'  => '2017-02-02',
-                'x-api-response-version' => '2017-02-02',
+                'x-api-request-version'  => '2017-01-01',
+                'x-api-response-version' => '2017-01-01',
             ]
         );
 
         $response->assertJson([
-            'request' => ['foo' => 'value']
+            'request' => [
+                'title' => 'This is going to be an awesome article!',
+                'body' => 'Awesome content! I told you!',
+            ],
         ]);
     }
 }
