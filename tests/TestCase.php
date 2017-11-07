@@ -8,6 +8,7 @@ use Orchestra\Testbench\TestCase as Orchestra;
 use TomSchlick\RequestMigrations\RequestMigrationsMiddleware;
 use TomSchlick\RequestMigrations\RequestMigrationsServiceProvider;
 use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\TitleMigration;
 
 abstract class TestCase extends Orchestra
 {
@@ -53,17 +54,13 @@ abstract class TestCase extends Orchestra
             'current_version' => '2017-04-04',
 
             'versions' => [
-                '2017-01-01' => [
-
-                ],
-                '2017-02-02' => [
-
-                ],
+                '2017-01-01' => [],
+                '2017-02-02' => [],
                 '2017-03-03' => [
                     GroupNameMigration::class,
                 ],
                 '2017-04-04' => [
-
+                    TitleMigration::class,
                 ],
             ],
         ]);

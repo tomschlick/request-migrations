@@ -8,8 +8,34 @@ use TomSchlick\RequestMigrations\Facades\RequestMigrations;
 class RequestAndResponseTest extends TestCase
 {
     /** @test */
-    public function it_will_get_an_unmodified_user_object()
+    public function it_will_migrate_through_multiple_versions()
     {
+        // This test is correct
+
+        $response = $this->get('/users/show', [
+            'x-api-request-version'  => '2017-02-02',
+            'x-api-response-version' => '2017-02-02',
+        ]);
+
+        $response->assertJson([
+            'id'   => 123,
+            'firstname' => 'Dwight',
+            'lastname'  => 'Schrute',
+            'position' => 'Assistant to the Regional Manager',
+        ]);
+
+        $this->assertArrayNotHasKey('title', $response->json());
+        $this->assertArrayNotHasKey('name', $response->json());
+
+        $response->assertHeader('x-api-request-version', '2017-02-02');
+        $response->assertHeader('x-api-response-version', '2017-02-02');
+    }
+
+    /** @test */
+    public function it_does_not_run_a_migration_for_the_requested_version()
+    {
+        // This test is correct
+
         $response = $this->get('/users/show', [
             'x-api-request-version'  => '2017-03-03',
             'x-api-response-version' => '2017-03-03',
@@ -17,12 +43,18 @@ class RequestAndResponseTest extends TestCase
 
         $response->assertJson([
             'id'   => 123,
-            'firstname' => 'Dwight',
-            'lastname'  => 'Schrute',
+            'name' => [
+                'firstname' => 'Dwight',
+                'lastname'  => 'Schrute',
+            ],
+            'position' => 'Assistant to the Regional Manager',
         ]);
+
+        $this->assertArrayNotHasKey('title', $response->json());
 
         $response->assertHeader('x-api-request-version', '2017-03-03');
         $response->assertHeader('x-api-response-version', '2017-03-03');
+        $response->assertHeader('x-api-current-version', '2017-04-04');
     }
 
     /** @test */

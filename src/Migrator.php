@@ -182,14 +182,19 @@ class Migrator
     public function neededMigrations($migrationVersion) : array
     {
         return Collection::make(Arr::get($this->config, 'versions', []))
-            ->reject(function ($classList, $version) use ($migrationVersion) {
-                return $version > $migrationVersion;
+            ->filter(function ($classList, $version) use ($migrationVersion) {
+                return $migrationVersion < $version;
             })->filter(function ($classList) {
-                return Collection::make($classList)->transform(function ($class) {
-                    return Collection::make((new $class)->paths())->filter(function ($path) {
-                        return $this->request->is($path);
-                    });
-                })->isNotEmpty();
+                return $this->hasMigrationForCurrentPath($classList);
             })->toArray();
+    }
+
+    private function hasMigrationForCurrentPath(array $migrationClasses) : bool
+    {
+        return Collection::make($migrationClasses)->transform(function ($migrationClass) {
+            return Collection::make((new $migrationClass)->paths())->filter(function ($path) {
+                return $this->request->is($path);
+            });
+        })->isNotEmpty();
     }
 }
