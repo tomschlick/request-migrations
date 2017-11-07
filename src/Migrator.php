@@ -55,8 +55,8 @@ class Migrator
     public function setRequest(Request $request) : self
     {
         $this->request = $request;
-        $this->requestVersion = $this->requestVersion ?: $request->header(Arr::get($this->config, 'headers.request-version'));
-        $this->responseVersion = $this->responseVersion ?: $request->header(Arr::get($this->config, 'headers.response-version'));
+        $this->requestVersion = $this->requestVersion ?: ($request->header(Arr::get($this->config, 'headers.request-version')) ?? Arr::get($this->config, 'current_version'));
+        $this->responseVersion = $this->responseVersion ?: ($request->header(Arr::get($this->config, 'headers.response-version')) ?? Arr::get($this->config, 'current_version'));
 
         return $this;
     }

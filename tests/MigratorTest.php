@@ -14,4 +14,25 @@ class MigratorTest extends TestCase
 
         $response->assertHeader('x-api-current-version', '2017-04-04');
     }
+
+    /** @test */
+    public function it_will_default_to_the_most_recent_version()
+    {
+        $response = $this->get('users/show');
+
+        $response->assertExactJson([
+            'id'     => 123,
+            'name'   => [
+                'firstname' => 'Dwight',
+                'lastname'  => 'Schrute',
+            ],
+            'title'  => 'Assistant to the Regional Manager',
+            'skills' => [
+                'bears',
+                'beats',
+                'battlestar galactica',
+            ],
+            'request' => [],
+        ]);
+    }
 }
