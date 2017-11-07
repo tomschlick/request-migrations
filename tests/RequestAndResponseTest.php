@@ -10,8 +10,6 @@ class RequestAndResponseTest extends TestCase
     /** @test */
     public function it_will_migrate_through_response_multiple_versions()
     {
-        // This test is correct
-
         $response = $this->get('/users/show', [
             'x-api-request-version'  => '2017-02-02',
             'x-api-response-version' => '2017-02-02',

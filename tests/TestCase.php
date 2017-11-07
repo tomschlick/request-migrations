@@ -9,6 +9,7 @@ use TomSchlick\RequestMigrations\RequestMigrationsMiddleware;
 use TomSchlick\RequestMigrations\Tests\Migrations\TitleMigration;
 use TomSchlick\RequestMigrations\RequestMigrationsServiceProvider;
 use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\RequestMigrationExample;
 
 abstract class TestCase extends Orchestra
 {
@@ -58,6 +59,7 @@ abstract class TestCase extends Orchestra
                 '2017-02-02' => [],
                 '2017-03-03' => [
                     GroupNameMigration::class,
+                    RequestMigrationExample::class,
                 ],
                 '2017-04-04' => [
                     TitleMigration::class,
@@ -95,6 +97,10 @@ abstract class TestCase extends Orchestra
                 'title'     => request('title'),
                 'skills'    => request('skills'),
             ];
+        });
+
+        Route::post('request-test', function (Request $request) {
+            return $request->all();
         });
 
         $app['router']->getRoutes()->refreshNameLookups();
