@@ -52,7 +52,7 @@ class Migrator
      * @param Request $request
      * @return Migrator
      */
-    public function setRequest(Request $request) : Migrator
+    public function setRequest(Request $request) : self
     {
         $this->request = $request;
         $this->requestVersion = $this->requestVersion ?: $request->header(Arr::get($this->config, 'headers.request-version'));
@@ -67,7 +67,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setResponseVersion(string $version) : Migrator
+    public function setResponseVersion(string $version) : self
     {
         $this->responseVersion = $version;
 
@@ -80,7 +80,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setRequestVersion(string $version) : Migrator
+    public function setRequestVersion(string $version) : self
     {
         $this->requestVersion = $version;
 
@@ -93,7 +93,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setVersion(string $version) : Migrator
+    public function setVersion(string $version) : self
     {
         $this->requestVersion = $version;
         $this->responseVersion = $version;
