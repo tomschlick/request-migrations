@@ -189,6 +189,13 @@ class Migrator
             })->toArray();
     }
 
+    /**
+     * Checks to see if any migrations should be applied to the current request route.
+     *
+     * @param array $migrationClasses
+     *
+     * @return bool
+     */
     private function hasMigrationForCurrentPath(array $migrationClasses) : bool
     {
         return Collection::make($migrationClasses)->transform(function ($migrationClass) {
