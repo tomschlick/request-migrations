@@ -29,7 +29,7 @@ If you are using an earlier version of Laravel or have autoloading disabled you 
 ```
 ```php
 'aliases' => [
-    'RequestMigrations' => '\TomSchlick\RequestMigrations\Facades\RequestMigrations::class,
+    'RequestMigrations' => \TomSchlick\RequestMigrations\Facades\RequestMigrations::class,
 ]
 ```
 
