@@ -24,7 +24,7 @@ If you are using an earlier version of Laravel or have autoloading disabled you 
 
 ```php
 'providers' => [
-    \TomSchlick\RequestMigrations\RequestMigrationsMiddleware::class,
+    \TomSchlick\RequestMigrations\RequestMigrationsServiceProvider.php,
 ]
 ```
 ```php
