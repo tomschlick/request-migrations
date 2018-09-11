@@ -5,13 +5,12 @@ namespace TomSchlick\RequestMigrations\Tests;
 use Illuminate\Support\Facades\Event;
 use TomSchlick\RequestMigrations\Events\RequestHasMigrated;
 use TomSchlick\RequestMigrations\Events\RequestIsMigrating;
-use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
 use TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
 use TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration;
 
 class EventTest extends TestCase
 {
-
     /** @test */
     public function event_are_emitted_on_migration()
     {
