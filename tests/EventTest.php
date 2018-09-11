@@ -5,6 +5,9 @@ namespace TomSchlick\RequestMigrations\Tests;
 use Illuminate\Support\Facades\Event;
 use TomSchlick\RequestMigrations\Events\RequestHasMigrated;
 use TomSchlick\RequestMigrations\Events\RequestIsMigrating;
+use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration;
 
 class EventTest extends TestCase
 {
@@ -28,9 +31,9 @@ class EventTest extends TestCase
         );
 
         $expectedEvents = [
-            'TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration',
-            'TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration',
-            'TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration',
+            PostBodyMigration::class,
+            GroupNameMigration::class,
+            PostTitleMigration::class,
         ];
 
         Event::assertDispatched(RequestIsMigrating::class, function (RequestIsMigrating $event) use (&$expectedEvents){
@@ -47,9 +50,9 @@ class EventTest extends TestCase
         $this->assertCount(0, $expectedEvents);
 
         $expectedEvents = [
-            'TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration',
-            'TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration',
-            'TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration',
+            PostBodyMigration::class,
+            GroupNameMigration::class,
+            PostTitleMigration::class,
         ];
 
         Event::assertDispatched(RequestHasMigrated::class, function (RequestHasMigrated $event) use (&$expectedEvents){
