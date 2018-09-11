@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
+use TomSchlick\RequestMigrations\Events\RequestHasMigrated;
 use TomSchlick\RequestMigrations\Events\RequestIsMigrating;
 use TomSchlick\RequestMigrations\Events\ResponseHasMigrated;
 use TomSchlick\RequestMigrations\Events\ResponseIsMigrating;
@@ -121,7 +122,7 @@ class Migrator
 
                 $this->request = $class->migrateRequest($originalRequest);
 
-                Event::fire(new RequestIsMigrating($class, $originalRequest, $this->request));
+                Event::fire(new RequestHasMigrated($class, $originalRequest, $this->request));
             });
 
         return $this->request;
