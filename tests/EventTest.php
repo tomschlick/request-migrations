@@ -36,7 +36,7 @@ class EventTest extends TestCase
             PostTitleMigration::class,
         ];
 
-        Event::assertDispatched(RequestIsMigrating::class, function (RequestIsMigrating $event) use (&$expectedEvents){
+        Event::assertDispatched(RequestIsMigrating::class, function (RequestIsMigrating $event) use (&$expectedEvents) {
             $migration = get_class($event->migration);
 
             // Remove the emitted event from expected array
@@ -55,7 +55,7 @@ class EventTest extends TestCase
             PostTitleMigration::class,
         ];
 
-        Event::assertDispatched(RequestHasMigrated::class, function (RequestHasMigrated $event) use (&$expectedEvents){
+        Event::assertDispatched(RequestHasMigrated::class, function (RequestHasMigrated $event) use (&$expectedEvents) {
             $migration = get_class($event->migration);
 
             // Remove the emitted event from expected array
@@ -75,5 +75,4 @@ class EventTest extends TestCase
             ],
         ]);
     }
-
 }
