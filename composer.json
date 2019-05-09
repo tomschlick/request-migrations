@@ -19,7 +19,7 @@
         }
     ],
     "require" : {
-        "php" : "^7.0",
+        "php" : "^7.1",
         "illuminate/config" : "^5.4",
         "illuminate/contracts" : "^5.4",
         "illuminate/events" : "^5.4",
