@@ -16,7 +16,7 @@ use TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration;
 
 abstract class TestCase extends Orchestra
 {
-    public function setUp()
+    public function setUp() : void
     {
         parent::setUp();
         $this->setupConfig($this->app);
