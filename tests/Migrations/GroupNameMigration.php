@@ -2,6 +2,7 @@
 
 namespace TomSchlick\RequestMigrations\Tests\Migrations;
 
+use Arr;
 use Illuminate\Http\Request;
 use Symfony\Component\HttpFoundation\Response;
 use TomSchlick\RequestMigrations\RequestMigration;
@@ -31,8 +32,8 @@ class GroupNameMigration extends RequestMigration
     {
         $content = json_decode($response->getContent(), true);
 
-        $content['firstname'] = array_get($content, 'name.firstname');
-        $content['lastname'] = array_get($content, 'name.lastname');
+        $content['firstname'] = Arr::get($content, 'name.firstname');
+        $content['lastname'] = Arr::get($content, 'name.lastname');
         unset($content['name']);
 
         return $response->setContent(json_encode($content));
