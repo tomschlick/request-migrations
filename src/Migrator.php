@@ -201,7 +201,7 @@ class Migrator
     private function migrationsForVersion(array $migrationClasses) : Collection
     {
         return Collection::make($migrationClasses)->filter(function ($migrationClass) {
-            return in_array($this->request->path(), (new $migrationClass)->paths());
+            return $this->request->is((new $migrationClass)->paths());
         });
     }
 
