@@ -2,17 +2,17 @@
 
 namespace TomSchlick\RequestMigrations\Tests;
 
-use Illuminate\Http\Request;
 use Illuminate\Contracts\Http\Kernel;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Event;
 use Illuminate\Support\Facades\Route;
 use Orchestra\Testbench\TestCase as Orchestra;
 use TomSchlick\RequestMigrations\RequestMigrationsMiddleware;
-use TomSchlick\RequestMigrations\Tests\Migrations\TitleMigration;
 use TomSchlick\RequestMigrations\RequestMigrationsServiceProvider;
-use TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration;
 use TomSchlick\RequestMigrations\Tests\Migrations\GroupNameMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\PostBodyMigration;
 use TomSchlick\RequestMigrations\Tests\Migrations\PostTitleMigration;
+use TomSchlick\RequestMigrations\Tests\Migrations\TitleMigration;
 
 abstract class TestCase extends Orchestra
 {

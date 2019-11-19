@@ -3,8 +3,8 @@
 namespace TomSchlick\RequestMigrations;
 
 use Closure;
-use Illuminate\Http\Request;
 use Illuminate\Container\Container;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Config;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Exception\HttpException;
