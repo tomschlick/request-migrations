@@ -2,8 +2,8 @@
 
 namespace TomSchlick\RequestMigrations;
 
-use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
+use Illuminate\Support\Arr;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Event;
 use Symfony\Component\HttpFoundation\Response;
