@@ -17,7 +17,7 @@ class RequestMigrationsMiddleware
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function handle(Request $request, Closure $next) : Response
+    public function handle(Request $request, Closure $next): Response
     {
         if ($this->requestVersion($request) && ! in_array($this->requestVersion($request), $this->versions())) {
             throw new HttpException(400, 'The request version is invalid');
@@ -43,7 +43,7 @@ class RequestMigrationsMiddleware
      *
      * @return array
      */
-    private function versions() : array
+    private function versions(): array
     {
         return array_keys(Config::get('request-migrations.versions'));
     }
@@ -55,7 +55,7 @@ class RequestMigrationsMiddleware
      *
      * @return string
      */
-    private function requestVersion(Request $request) : string
+    private function requestVersion(Request $request): string
     {
         return $request->header(Config::get('request-migrations.headers.request-version'), '');
     }
@@ -67,7 +67,7 @@ class RequestMigrationsMiddleware
      *
      * @return string
      */
-    private function responseVersion(Request $request) : string
+    private function responseVersion(Request $request): string
     {
         return $request->header(Config::get('request-migrations.headers.response-version'), '');
     }

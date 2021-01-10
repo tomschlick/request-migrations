@@ -14,7 +14,7 @@ class PostBodyMigration extends RequestMigration
      *
      * @return \Illuminate\Http\Request
      */
-    public function migrateRequest(Request $request) : Request
+    public function migrateRequest(Request $request): Request
     {
         $request['body'] = $request['content'];
         unset($request['content']);
@@ -27,7 +27,7 @@ class PostBodyMigration extends RequestMigration
      *
      * @return array
      */
-    public function paths() : array
+    public function paths(): array
     {
         return [
             'posts',
