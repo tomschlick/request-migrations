@@ -16,7 +16,7 @@ class GroupNameMigration extends RequestMigration
      *
      * @return \Illuminate\Http\Request
      */
-    public function migrateRequest(Request $request) : Request
+    public function migrateRequest(Request $request): Request
     {
         return $request;
     }
@@ -28,7 +28,7 @@ class GroupNameMigration extends RequestMigration
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function migrateResponse(Response $response) : Response
+    public function migrateResponse(Response $response): Response
     {
         $content = json_decode($response->getContent(), true);
 
@@ -44,7 +44,7 @@ class GroupNameMigration extends RequestMigration
      *
      * @return array
      */
-    public function paths() : array
+    public function paths(): array
     {
         return [
             'users/show',

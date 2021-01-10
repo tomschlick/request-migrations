@@ -53,7 +53,7 @@ class Migrator
      * @param Request $request
      * @return Migrator
      */
-    public function setRequest(Request $request) : self
+    public function setRequest(Request $request): self
     {
         $this->request = $request;
         $this->requestVersion = $this->requestVersion ?: $this->determineRequestVersion($request);
@@ -68,7 +68,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setResponseVersion(string $version) : self
+    public function setResponseVersion(string $version): self
     {
         $this->responseVersion = $version;
 
@@ -81,7 +81,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setRequestVersion(string $version) : self
+    public function setRequestVersion(string $version): self
     {
         $this->requestVersion = $version;
 
@@ -94,7 +94,7 @@ class Migrator
      * @param string $version
      * @return Migrator
      */
-    public function setVersion(string $version) : self
+    public function setVersion(string $version): self
     {
         $this->requestVersion = $version;
         $this->responseVersion = $version;
@@ -107,7 +107,7 @@ class Migrator
      *
      * @return \Illuminate\Http\Request
      */
-    public function processRequestMigrations() : Request
+    public function processRequestMigrations(): Request
     {
         Collection::make($this->neededMigrations($this->requestVersion))
             ->transform(function ($migrations) {
@@ -180,7 +180,7 @@ class Migrator
      *
      * @return array
      */
-    public function neededMigrations($migrationVersion) : array
+    public function neededMigrations($migrationVersion): array
     {
         return Collection::make(Arr::get($this->config, 'versions', []))
             ->filter(function ($classList, $version) use ($migrationVersion) {
@@ -198,7 +198,7 @@ class Migrator
      *
      * @return Collection
      */
-    private function migrationsForVersion(array $migrationClasses) : Collection
+    private function migrationsForVersion(array $migrationClasses): Collection
     {
         return Collection::make($migrationClasses)->filter(function ($migrationClass) {
             return in_array($this->request->path(), (new $migrationClass)->paths());
@@ -212,7 +212,7 @@ class Migrator
      *
      * @return  string
      */
-    private function determineRequestVersion(Request $request) : string
+    private function determineRequestVersion(Request $request): string
     {
         return $request->header(Arr::get($this->config, 'headers.request-version')) ?? Arr::get($this->config, 'current_version');
     }
@@ -224,7 +224,7 @@ class Migrator
      *
      * @return  string
      */
-    private function determineResponseVersion(Request $request) : string
+    private function determineResponseVersion(Request $request): string
     {
         return $request->header(Arr::get($this->config, 'headers.response-version')) ?? Arr::get($this->config, 'current_version');
     }

@@ -14,7 +14,7 @@ abstract class RequestMigration
      *
      * @return \Illuminate\Http\Request
      */
-    public function migrateRequest(Request $request) : Request
+    public function migrateRequest(Request $request): Request
     {
         return $request;
     }
@@ -26,7 +26,7 @@ abstract class RequestMigration
      *
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function migrateResponse(Response $response) : Response
+    public function migrateResponse(Response $response): Response
     {
         return $response;
     }
@@ -36,5 +36,5 @@ abstract class RequestMigration
      *
      * @return array
      */
-    abstract public function paths() : array;
+    abstract public function paths(): array;
 }

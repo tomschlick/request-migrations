@@ -52,8 +52,8 @@ class RequestTest extends TestCase
 
         $response->assertJson([
             'id' => 123,
-                'firstname' => 'Dwight',
-                'lastname'  => 'Schrute',
+            'firstname' => 'Dwight',
+            'lastname'  => 'Schrute',
         ]);
 
         $response->assertHeader('x-api-request-version', '2017-01-01');
