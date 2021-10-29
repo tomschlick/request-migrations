@@ -14,7 +14,7 @@ jobs:
             matrix:
                 php: [7.2, 7.3, 7.4, 8.0, 8.1]
                 stability: 
-                  - prefer-lowest
+#                   - prefer-lowest
                   - prefer-stable
 
         name: PHP ${{ matrix.php }} - ${{ matrix.stability }}
