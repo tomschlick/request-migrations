@@ -18,8 +18,8 @@ class ResponseIsMigrating
     public $originalResponse;
 
     /**
-     * @param \TomSchlick\RequestMigrations\RequestMigration $migration
-     * @param \Symfony\Component\HttpFoundation\Response     $originalResponse
+     * @param  \TomSchlick\RequestMigrations\RequestMigration  $migration
+     * @param  \Symfony\Component\HttpFoundation\Response  $originalResponse
      */
     public function __construct(RequestMigration $migration, Response $originalResponse)
     {

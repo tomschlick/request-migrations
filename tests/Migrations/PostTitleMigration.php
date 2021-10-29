@@ -10,8 +10,7 @@ class PostTitleMigration extends RequestMigration
     /**
      * Migrate the request for the application to "read".
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Request
      */
     public function migrateRequest(Request $request): Request

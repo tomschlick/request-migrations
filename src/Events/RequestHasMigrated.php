@@ -23,9 +23,9 @@ class RequestHasMigrated
     public $modifiedRequest;
 
     /**
-     * @param \TomSchlick\RequestMigrations\RequestMigration $migration
-     * @param \Illuminate\Http\Request                       $originalRequest
-     * @param \Illuminate\Http\Request                       $modifiedRequest
+     * @param  \TomSchlick\RequestMigrations\RequestMigration  $migration
+     * @param  \Illuminate\Http\Request  $originalRequest
+     * @param  \Illuminate\Http\Request  $modifiedRequest
      */
     public function __construct(RequestMigration $migration, Request $originalRequest, Request $modifiedRequest)
     {

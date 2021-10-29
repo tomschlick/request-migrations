@@ -12,9 +12,8 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 class RequestMigrationsMiddleware
 {
     /**
-     * @param \Illuminate\Http\Request $request
-     * @param \Closure                 $next
-     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  \Closure  $next
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function handle(Request $request, Closure $next): Response
@@ -51,8 +50,7 @@ class RequestMigrationsMiddleware
     /**
      * Get the request version from the request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return string
      */
     private function requestVersion(Request $request): string
@@ -63,8 +61,7 @@ class RequestMigrationsMiddleware
     /**
      * Get the response version from the request.
      *
-     * @param \Illuminate\Http\Request $request
-     *
+     * @param  \Illuminate\Http\Request  $request
      * @return string
      */
     private function responseVersion(Request $request): string
