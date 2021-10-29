@@ -23,9 +23,9 @@ class ResponseHasMigrated
     public $modifiedResponse;
 
     /**
-     * @param \TomSchlick\RequestMigrations\RequestMigration $migration
-     * @param \Symfony\Component\HttpFoundation\Response     $originalResponse
-     * @param \Symfony\Component\HttpFoundation\Response     $modifiedResponse
+     * @param  \TomSchlick\RequestMigrations\RequestMigration  $migration
+     * @param  \Symfony\Component\HttpFoundation\Response  $originalResponse
+     * @param  \Symfony\Component\HttpFoundation\Response  $modifiedResponse
      */
     public function __construct(RequestMigration $migration, Response $originalResponse, Response $modifiedResponse)
     {

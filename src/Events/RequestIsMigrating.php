@@ -18,8 +18,8 @@ class RequestIsMigrating
     public $originalRequest;
 
     /**
-     * @param \TomSchlick\RequestMigrations\RequestMigration $migration
-     * @param \Illuminate\Http\Request                       $originalRequest
+     * @param  \TomSchlick\RequestMigrations\RequestMigration  $migration
+     * @param  \Illuminate\Http\Request  $originalRequest
      */
     public function __construct(RequestMigration $migration, Request $originalRequest)
     {

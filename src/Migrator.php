@@ -38,7 +38,7 @@ class Migrator
     /**
      * Migrator constructor.
      *
-     * @param array $config
+     * @param  array  $config
      */
     public function __construct(array $config)
     {
@@ -50,7 +50,7 @@ class Migrator
     /**
      * Set the request and the versions from the request headers.
      *
-     * @param Request $request
+     * @param  Request  $request
      * @return Migrator
      */
     public function setRequest(Request $request): self
@@ -65,7 +65,7 @@ class Migrator
     /**
      * Set the response version.
      *
-     * @param string $version
+     * @param  string  $version
      * @return Migrator
      */
     public function setResponseVersion(string $version): self
@@ -78,7 +78,7 @@ class Migrator
     /**
      * Set the request version.
      *
-     * @param string $version
+     * @param  string  $version
      * @return Migrator
      */
     public function setRequestVersion(string $version): self
@@ -91,7 +91,7 @@ class Migrator
     /**
      * Set both the response and request version.
      *
-     * @param string $version
+     * @param  string  $version
      * @return Migrator
      */
     public function setVersion(string $version): self
@@ -131,7 +131,7 @@ class Migrator
     /**
      * Process the migrations for the outgoing response.
      *
-     * @param \Symfony\Component\HttpFoundation\Response $response
+     * @param  \Symfony\Component\HttpFoundation\Response  $response
      */
     public function processResponseMigrations(Response $response)
     {
@@ -177,7 +177,6 @@ class Migrator
      * Figure out which migrations apply to the current request.
      *
      * @param $migrationVersion The migration version to check migrations against
-     *
      * @return array
      */
     public function neededMigrations($migrationVersion): array
@@ -194,8 +193,7 @@ class Migrator
     /**
      * Checks to see if any migrations should be applied to the current request route.
      *
-     * @param array $migrationClasses
-     *
+     * @param  array  $migrationClasses
      * @return Collection
      */
     private function migrationsForVersion(array $migrationClasses): Collection
@@ -208,9 +206,8 @@ class Migrator
     /**
      * Determines the request version from the header defaults to current version.
      *
-     * @param  Request $request
-     *
-     * @return  string
+     * @param  Request  $request
+     * @return string
      */
     private function determineRequestVersion(Request $request): string
     {
@@ -220,9 +217,8 @@ class Migrator
     /**
      * Determines the response version from the header defaults to current version.
      *
-     * @param  Request $request
-     *
-     * @return  string
+     * @param  Request  $request
+     * @return string
      */
     private function determineResponseVersion(Request $request): string
     {
